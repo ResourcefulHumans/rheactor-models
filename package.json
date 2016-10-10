@@ -1,7 +1,6 @@
 {
   "name": "rheactor-models",
   "description": "A collection of models",
-  "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/standard",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
