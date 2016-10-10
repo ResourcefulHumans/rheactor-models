@@ -23,28 +23,26 @@ function JsonWebToken (token, $links) {
   this.jti = undefined // JWT ID
 
   var data = JSON.parse(atob(token.split('.')[1]))
-  if (data) {
-    var self = this
-    _forEach(this, function (value, key) {
-      self[key] = data[key] || undefined
-      delete data[key]
-    })
-    if (this.exp) {
-      this.exp = new Date(this.exp * 1000)
-    }
-    if (this.nbf) {
-      this.nbf = new Date(this.nbf * 1000)
-    }
-    if (this.iat) {
-      this.iat = new Date(this.iat * 1000)
-    }
-    this.$links = $links || []
-    // Store remaining data
-    this.payload = data
+  var self = this
+  _forEach(this, function (value, key) {
+    self[key] = data[key] || undefined
+    delete data[key]
+  })
+  if (this.exp) {
+    this.exp = new Date(this.exp * 1000)
   }
+  if (this.nbf) {
+    this.nbf = new Date(this.nbf * 1000)
+  }
+  if (this.iat) {
+    this.iat = new Date(this.iat * 1000)
+  }
+  this.$links = $links || []
+  // Store remaining data
+  this.payload = data
 
   this.$context = JsonWebToken.$context
-  this.token = token || undefined
+  this.token = token
 }
 
 JsonWebToken.$context = 'https://tools.ietf.org/html/rfc7519'
