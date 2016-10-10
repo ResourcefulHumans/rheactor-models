@@ -7,4 +7,4 @@
 
 [![NPM](https://nodei.co/npm/rheactor-models.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/rheactor-models/)
 
-A collection of models
+A collection of models.
