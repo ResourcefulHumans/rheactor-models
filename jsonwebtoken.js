@@ -3,8 +3,13 @@
 const _forEach = require('lodash/forEach')
 
 if (!atob) {
-  var atob = function (str) {
-    return new Buffer(str, 'base64').toString('binary')
+  var atob
+  if (typeof Buffer !== 'undefined') {
+    atob = function (str) {
+      return new Buffer(str, 'base64').toString('binary')
+    }
+  } else {
+    atob = require('base-64').decode
   }
 }
 
