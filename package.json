@@ -1,14 +1,16 @@
 {
   "name": "rheactor-models",
   "description": "A collection of models",
+  "version": "0.0.0-development",
+  "main": "dist/index.js",
   "scripts": {
+    "test": "NODE_ENV=testing mocha --compilers js:babel-register --reporter=dot --timeout=1350 test/\\*\\*/\\*.js",
+    "test:coverage": "NODE_ENV=nyc babel src --out-dir instrumented-src > /dev/null && nyc --reporter=text-summary --reporter=lcov npm run test",
+    "test:coverage-travis": "npm run test:coverage && codeclimate-test-reporter < ./coverage/lcov.info && rm -rf ./coverage",
     "lint": "standard",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "test": "NODE_ENV=testing mocha --reporter=dot --timeout=1350 test/\\*.js",
-    "test:coverage": "NODE_ENV=testing istanbul cover _mocha test/\\*\\*/\\*.js",
-    "test:coverage-travis": "NODE_ENV=testing istanbul cover _mocha --report lcovonly -- -R dot --timeout=1350 test/\\*.js && codeclimate-test-reporter < ./coverage/lcov.info && rm -rf ./coverage",
-    "precommit": "npm run lint",
-    "commitmsg": "validate-commit-msg"
+    "precommit": "npm run lint && npm test",
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -22,9 +24,15 @@
   "homepage": "https://github.com/ResourcefulHumans/rheactor-models#readme",
   "dependencies": {
     "base-64": "^0.1.0",
-    "lodash": "^4.12.0"
+    "tcomb": "^3.2.16",
+    "rheactor-value-objects": "^4.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-preset-env": "^1.1.1",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "codeclimate-test-reporter": "^0.4.0",
     "husky": "<2.0.0",
@@ -32,8 +40,13 @@
     "jsonwebtoken": "^7.1.9",
     "mocha": "^3.1.2",
     "mocha-lcov-reporter": "^1.2.0",
+    "nyc": "^10.0.0",
     "semantic-release": "^6.3.2",
     "standard": "^8.3.0",
     "validate-commit-msg": "^2.6.1"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }
