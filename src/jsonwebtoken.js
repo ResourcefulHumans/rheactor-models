@@ -95,6 +95,4 @@ export const JsonWebTokenJSONType = struct({
   token: StringType,
   $links: maybe(list(LinkJSONType))
 }, 'JsonWebTokenJSONType')
-export const JsonWebTokenType = irreducible('JsonWebTokenType', (x) => {
-  return (x instanceof JsonWebToken) || (x && x.constructor && x.constructor.name === JsonWebToken.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
-})
+export const JsonWebTokenType = irreducible('JsonWebTokenType', x => (x instanceof JsonWebToken) || (x && x.constructor && x.constructor.name === JsonWebToken.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))

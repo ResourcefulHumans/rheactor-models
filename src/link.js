@@ -60,4 +60,4 @@ export const LinkJSONType = struct({
   list: maybe(BooleanType),
   rel: maybe(StringType)
 }, 'LinkJSONType')
-export const LinkType = irreducible('LinkType', (x) => x instanceof Link)
+export const LinkType = irreducible('LinkType', x => (x instanceof Link) || (x && x.constructor && x.constructor.name === Link.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))

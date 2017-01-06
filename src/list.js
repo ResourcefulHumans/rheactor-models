@@ -84,4 +84,4 @@ export const ListJSONType = struct({
   total: ZeroOrPositiveIntegerType,
   itemsPerPage: PositiveIntegerType
 }, 'ListJSONType')
-export const ListType = irreducible('ListType', (x) => x instanceof List)
+export const ListType = irreducible('ListType', x => (x instanceof List) || (x && x.constructor && x.constructor.name === List.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))

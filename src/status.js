@@ -54,4 +54,4 @@ export const StatusJSONType = struct({
   time: StringType,
   version: StringType
 }, 'StatusJSONType')
-export const StatusType = irreducible('StatusType', (x) => x instanceof Status)
+export const StatusType = irreducible('StatusType', x => (x instanceof Status) || (x && x.constructor && x.constructor.name === Status.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))

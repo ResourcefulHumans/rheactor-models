@@ -76,6 +76,4 @@ export const HttpProblemJSONType = struct({
   status: HttpStatusCodeType,
   detail: MaybeStringType
 }, 'HttpProblemJSONType')
-export const HttpProblemType = irreducible('HttpProblemType', (x) => {
-  return (x instanceof HttpProblem) || (x && x.constructor && x.constructor.name === HttpProblem.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
-})
+export const HttpProblemType = irreducible('HttpProblemType', x => (x instanceof HttpProblem) || (x && x.constructor && x.constructor.name === HttpProblem.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))

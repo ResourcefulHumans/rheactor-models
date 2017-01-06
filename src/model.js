@@ -43,4 +43,4 @@ export const ModelJSONType = struct({
   $context: StringType,
   $links: maybe(list(LinkJSONType))
 }, 'ModelJSONType')
-export const ModelType = irreducible('ModelType', (x) => x instanceof Model)
+export const ModelType = irreducible('ModelTypeType', x => (x instanceof Model) || (x && '$context' in x && '$links' in x))

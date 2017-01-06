@@ -75,4 +75,4 @@ export const EntityJSONType = struct({
   $updatedAt: maybe(StringType),
   $deletedAt: maybe(StringType)
 }, 'EntityJSONType')
-export const EntityType = irreducible('EntityType', (x) => x instanceof Entity)
+export const EntityType = irreducible('EntityType', x => (x instanceof Entity) || (x && '$context' in x && '$id' in x && '$createdAt' in x && '$updatedAt' in x && '$deletedAt' in x))
