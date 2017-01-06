@@ -1,13 +1,14 @@
 import {String as StringType, Date as DateType, irreducible, refinement, struct} from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
-const $context = new URIValue('https://github.com/ResourcefulHumans/staRHs-models#Status')
+const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Status')
 
 export class Status {
   /**
-   * @param {{status: String, time: Date, version: String}} fields
+   * @param {String} status
+   * @param {Date} time
+   * @param {String} version
    */
-  constructor (fields) {
-    const {status, time, version} = fields
+  constructor (status, time, version) {
     StringType(status)
     DateType(time)
     StringType(version)
@@ -36,11 +37,7 @@ export class Status {
   static fromJSON (data) {
     StatusJSONType(data)
     const {status, time, version} = data
-    return new Status({
-      status,
-      time: new Date(time),
-      version
-    })
+    return new Status(status, new Date(time), version)
   }
 
   /**
