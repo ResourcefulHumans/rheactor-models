@@ -45,6 +45,13 @@ export class HttpProblem {
       data.detail
     )
   }
+
+  /**
+   * @returns {URIValue}
+   */
+  static get $context () {
+    return $context
+  }
 }
 
 HttpProblem.prototype = Object.create(Error.prototype)

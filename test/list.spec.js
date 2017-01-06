@@ -67,4 +67,10 @@ describe('List', () => {
       expect(jsondata.$links, 'if empty $links given, it should be empty in JSON').to.be.instanceof(Array)
     })
   })
+
+  describe('$context', () => {
+    it('should exist', () => {
+      expect(List.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#List')
+    })
+  })
 })

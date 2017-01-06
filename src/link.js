@@ -1,6 +1,6 @@
 import {String as StringType, Boolean as BooleanType, irreducible, maybe, struct, refinement} from 'tcomb'
 import {URIValue, URIValueType} from 'rheactor-value-objects'
-const $context = new URIValue('https://github.com/ResourcefulHumans/staRHs-models#Link')
+const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Link')
 
 export class Link {
   /**

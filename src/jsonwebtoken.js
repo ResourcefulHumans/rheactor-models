@@ -81,6 +81,13 @@ export class JsonWebToken extends Model {
   isExpired () {
     return this.exp.getTime() < Date.now()
   }
+
+  /**
+   * @returns {URIValue}
+   */
+  static get $context () {
+    return $context
+  }
 }
 
 export const JsonWebTokenJSONType = struct({

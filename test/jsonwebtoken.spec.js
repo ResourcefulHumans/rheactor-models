@@ -50,4 +50,10 @@ describe('JsonWebToken', function () {
       validateToken(webtoken)
     })
   })
+
+  describe('$context', () => {
+    it('should exist', () => {
+      expect(JsonWebToken.$context.toString()).to.equal('https://tools.ietf.org/html/rfc7519')
+    })
+  })
 })

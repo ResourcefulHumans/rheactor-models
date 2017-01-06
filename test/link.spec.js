@@ -51,4 +51,10 @@ describe('Link', () => {
       validateLink(link)
     })
   })
+
+  describe('$context', () => {
+    it('should exist', () => {
+      expect(Link.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#Link')
+    })
+  })
 })

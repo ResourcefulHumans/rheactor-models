@@ -31,6 +31,12 @@ describe('HttpProblem', function () {
     })
   })
 
+  describe('$context', () => {
+    it('should exist', () => {
+      expect(HttpProblem.$context.toString()).to.equal('https://www.ietf.org/id/draft-ietf-appsawg-http-problem-01.txt')
+    })
+  })
+
   describe('JSON', () => {
     it('should parse it\'s JSON representation', () => {
       const problem = HttpProblem.fromJSON(JSON.parse(JSON.stringify(new HttpProblem('type', 'title', 123, 'detail'))))
