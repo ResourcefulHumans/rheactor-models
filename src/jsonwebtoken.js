@@ -88,6 +88,16 @@ export class JsonWebToken extends Model {
   static get $context () {
     return $context
   }
+
+  /**
+   * Returns true if x is of type JsonWebToken
+   *
+   * @param {object} x
+   * @returns {boolean}
+   */
+  static is (x) {
+    return (x instanceof JsonWebToken) || (x && x.constructor && x.constructor.name === JsonWebToken.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
+  }
 }
 
 export const JsonWebTokenJSONType = struct({
@@ -95,4 +105,4 @@ export const JsonWebTokenJSONType = struct({
   token: StringType,
   $links: maybe(list(LinkJSONType))
 }, 'JsonWebTokenJSONType')
-export const JsonWebTokenType = irreducible('JsonWebTokenType', x => (x instanceof JsonWebToken) || (x && x.constructor && x.constructor.name === JsonWebToken.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))
+export const JsonWebTokenType = irreducible('JsonWebTokenType', JsonWebToken.is)

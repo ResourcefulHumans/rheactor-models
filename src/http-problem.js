@@ -52,6 +52,16 @@ export class HttpProblem {
   static get $context () {
     return $context
   }
+
+  /**
+   * Returns true if x is of type HttpProblem
+   *
+   * @param {object} x
+   * @returns {boolean}
+   */
+  static is (x) {
+    return x instanceof Error && x.name === HttpProblem.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)
+  }
 }
 
 HttpProblem.prototype = Object.create(Error.prototype)
@@ -76,4 +86,4 @@ export const HttpProblemJSONType = struct({
   status: HttpStatusCodeType,
   detail: MaybeStringType
 }, 'HttpProblemJSONType')
-export const HttpProblemType = irreducible('HttpProblemType', x => (x instanceof HttpProblem) || (x && x.name && x.name === HttpProblem.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))
+export const HttpProblemType = irreducible('HttpProblemType', HttpProblem.is)

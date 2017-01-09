@@ -46,6 +46,16 @@ export class Status {
   static get $context () {
     return $context
   }
+
+  /**
+   * Returns true if x is of type Status
+   *
+   * @param {object} x
+   * @returns {boolean}
+   */
+  static is (x) {
+    return (x instanceof Status) || (x && x.constructor && x.constructor.name === Status.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
+  }
 }
 
 export const StatusJSONType = struct({
@@ -54,4 +64,4 @@ export const StatusJSONType = struct({
   time: StringType,
   version: StringType
 }, 'StatusJSONType')
-export const StatusType = irreducible('StatusType', x => (x instanceof Status) || (x && x.constructor && x.constructor.name === Status.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))
+export const StatusType = irreducible('StatusType', Status.is)

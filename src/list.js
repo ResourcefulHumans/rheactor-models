@@ -76,6 +76,16 @@ export class List {
   static get $context () {
     return $context
   }
+
+  /**
+   * Returns true if x is of type List
+   *
+   * @param {object} x
+   * @returns {boolean}
+   */
+  static is (x) {
+    return (x instanceof List) || (x && x.constructor && x.constructor.name === List.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
+  }
 }
 
 export const ListJSONType = struct({
@@ -84,4 +94,4 @@ export const ListJSONType = struct({
   total: ZeroOrPositiveIntegerType,
   itemsPerPage: PositiveIntegerType
 }, 'ListJSONType')
-export const ListType = irreducible('ListType', x => (x instanceof List) || (x && x.constructor && x.constructor.name === List.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))
+export const ListType = irreducible('ListType', List.is)

@@ -37,10 +37,20 @@ export class Model {
       $links: data.$links ? data.$links.map(l => Link.fromJSON(l)) : []
     })
   }
+
+  /**
+   * Returns true if x is of type Model
+   *
+   * @param {object} x
+   * @returns {boolean}
+   */
+  static is (x) {
+    return (x instanceof Model) || (x && '$context' in x && '$links' in x)
+  }
 }
 
 export const ModelJSONType = struct({
   $context: StringType,
   $links: maybe(list(LinkJSONType))
 }, 'ModelJSONType')
-export const ModelType = irreducible('ModelTypeType', x => (x instanceof Model) || (x && '$context' in x && '$links' in x))
+export const ModelType = irreducible('ModelTypeType', Model.is)

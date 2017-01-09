@@ -51,6 +51,16 @@ export class Link {
   static get $context () {
     return $context
   }
+
+  /**
+   * Returns true if x is of type Link
+   *
+   * @param {object} x
+   * @returns {boolean}
+   */
+  static is (x) {
+    return (x instanceof Link) || (x && x.constructor && x.constructor.name === Link.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
+  }
 }
 
 export const LinkJSONType = struct({
@@ -60,4 +70,4 @@ export const LinkJSONType = struct({
   list: maybe(BooleanType),
   rel: maybe(StringType)
 }, 'LinkJSONType')
-export const LinkType = irreducible('LinkType', x => (x instanceof Link) || (x && x.constructor && x.constructor.name === Link.name && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context)))
+export const LinkType = irreducible('LinkType', Link.is)
