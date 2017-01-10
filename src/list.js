@@ -1,6 +1,6 @@
 import {
   String as StringType,
-  Number as NumberType,
+  Integer as IntegerType,
   Function as FunctionType,
   irreducible,
   refinement,
@@ -11,8 +11,8 @@ import {URIValue} from 'rheactor-value-objects'
 import {Model} from './model'
 import {Link, LinkJSONType} from './link'
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#List')
-const PositiveIntegerType = refinement(NumberType, n => n > 0 && n % 1 === 0, 'PositiveIntegerType')
-const ZeroOrPositiveIntegerType = refinement(NumberType, n => n >= 0 && n % 1 === 0, 'ZeroOrPositiveIntegerType')
+const PositiveIntegerType = refinement(IntegerType, n => n > 0, 'PositiveIntegerType')
+const ZeroOrPositiveIntegerType = refinement(IntegerType, n => n >= 0, 'ZeroOrPositiveIntegerType')
 const ModelListType = list(Model)
 const LinkListType = list(Link)
 

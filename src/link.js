@@ -1,6 +1,7 @@
 import {String as StringType, Boolean as BooleanType, irreducible, maybe, struct, refinement} from 'tcomb'
 import {URIValue, URIValueType} from 'rheactor-value-objects'
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Link')
+const MaybeStringType = maybe(StringType)
 
 export class Link {
   /**
@@ -13,7 +14,7 @@ export class Link {
     URIValueType(href)
     URIValueType(subject)
     BooleanType(list)
-    maybe(StringType)(rel)
+    MaybeStringType(rel)
     this.$context = $context
     this.href = href
     this.subject = subject

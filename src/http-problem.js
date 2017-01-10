@@ -1,4 +1,4 @@
-import {URIValue} from 'rheactor-value-objects'
+import {URIValue, URIValueType} from 'rheactor-value-objects'
 import {String as StringType, Integer as IntegerType, maybe, irreducible, refinement, struct} from 'tcomb'
 
 const $context = new URIValue('https://www.ietf.org/id/draft-ietf-appsawg-http-problem-01.txt')
@@ -19,8 +19,8 @@ export class HttpProblem {
    * @param {String} detail   An human readable explanation specific to this occurrence of the problem.
    * @constructor
    */
-  constructor (type = 'about:blank', title, status, detail) {
-    StringType(type)
+  constructor (type, title, status, detail) {
+    URIValueType(type)
     MaybeStringType(title)
     HttpStatusCodeType(status)
     MaybeStringType(detail)
@@ -39,7 +39,7 @@ export class HttpProblem {
   static fromJSON (data) {
     HttpProblemJSONType(data)
     return new HttpProblem(
-      data.type,
+      new URIValue(data.type),
       data.title,
       data.status,
       data.detail
@@ -72,7 +72,7 @@ HttpProblem.prototype = Object.create(Error.prototype)
 HttpProblem.prototype.toJSON = function () {
   return {
     $context: this.$context.toString(),
-    type: this.type,
+    type: this.type.toString(),
     title: this.title,
     status: this.status,
     detail: this.detail

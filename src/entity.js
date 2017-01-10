@@ -1,7 +1,7 @@
 import {URIValue} from 'rheactor-value-objects'
 import {irreducible, maybe, Date as DateType, String as StringType, struct} from 'tcomb'
 import {Model} from './model'
-const maybeDate = maybe(DateType)
+const MaybeDateType = maybe(DateType)
 
 export class Entity extends Model {
   /**
@@ -11,9 +11,9 @@ export class Entity extends Model {
     const {$id, $createdAt, $updatedAt, $deletedAt} = fields
     super(fields)
     StringType($id)
-    maybeDate($createdAt)
-    maybeDate($updatedAt)
-    maybeDate($deletedAt)
+    MaybeDateType($createdAt)
+    MaybeDateType($updatedAt)
+    MaybeDateType($deletedAt)
     this.$id = $id
     this.$createdAt = $createdAt
     this.$updatedAt = $updatedAt
@@ -75,7 +75,7 @@ export class Entity extends Model {
    * @returns {boolean}
    */
   static is (x) {
-    return (x instanceof Entity) || (x && '$context' in x && '$id' in x && '$createdAt' in x && '$updatedAt' in x && '$deletedAt' in x)
+    return (x instanceof Entity) || (Model.is(x) && '$id' in x && '$createdAt' in x && '$updatedAt' in x && '$deletedAt' in x)
   }
 }
 
