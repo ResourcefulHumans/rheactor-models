@@ -1,7 +1,7 @@
 import {URIValue, URIValueType} from 'rheactor-value-objects'
 import {irreducible, String as StringType, struct, maybe, list} from 'tcomb'
-import {Link, LinkJSONType} from './link'
-const LinkListType = list(Link)
+import {Link, LinkType, LinkJSONType} from './link'
+const LinkListType = list(LinkType)
 
 export class Model {
   /**

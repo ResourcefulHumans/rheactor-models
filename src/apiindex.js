@@ -1,8 +1,8 @@
 import {String as StringType, irreducible, refinement, list, struct} from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
-import {Link, LinkJSONType} from './link'
+import {Link, LinkType, LinkJSONType} from './link'
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Index')
-const LinkIndexType = list(Link)
+const LinkIndexType = list(LinkType)
 
 export class Index {
   /**

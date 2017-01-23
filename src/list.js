@@ -8,13 +8,13 @@ import {
   struct
 } from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
-import {Model} from './model'
-import {Link, LinkJSONType} from './link'
+import {ModelType} from './model'
+import {Link, LinkType, LinkJSONType} from './link'
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#List')
 const PositiveIntegerType = refinement(IntegerType, n => n > 0, 'PositiveIntegerType')
 const ZeroOrPositiveIntegerType = refinement(IntegerType, n => n >= 0, 'ZeroOrPositiveIntegerType')
-const ModelListType = list(Model)
-const LinkListType = list(Link)
+const ModelListType = list(ModelType)
+const LinkListType = list(LinkType)
 
 export class List {
   /**
