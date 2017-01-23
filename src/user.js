@@ -77,7 +77,7 @@ export class User extends Aggregate {
    * @returns {boolean}
    */
   static is (x) {
-    return (x instanceof User) || (Aggregate.is(x) && 'email' in x && 'firstname' in x && 'lastname' in x && 'name' in x && 'avatar' in x && 'superUser' in x && 'active' in x)
+    return (x instanceof User) || (Aggregate.is(x) && '$context' in x && URIValue.is(x.$context) && $context.equals(x.$context))
   }
 }
 
