@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Link, Model, List, ListType} from '../src'
+import {Link, Model, List, ListType, MaybeListType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const items = [new Model({
@@ -72,5 +70,14 @@ describe('List', () => {
     it('should exist', () => {
       expect(List.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#List')
     })
+  })
+})
+
+describe('MaybeListType', () => {
+  it('should accept empty value', () => {
+    MaybeListType()
+  })
+  it('should accept correct value', () => {
+    MaybeListType(new List(items, 1, 10, [link]))
   })
 })

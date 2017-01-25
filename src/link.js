@@ -11,10 +11,10 @@ export class Link {
    * @param {String} rel Label for the relation
    */
   constructor (href, subject, list = false, rel) {
-    URIValueType(href)
-    URIValueType(subject)
-    BooleanType(list)
-    MaybeStringType(rel)
+    URIValueType(href, ['Link', 'href:URIValue'])
+    URIValueType(subject, ['Link', 'subject:URIValue'])
+    BooleanType(list, ['Link', 'list:Boolean'])
+    MaybeStringType(rel, ['Link', 'rel:?String'])
     this.$context = $context
     this.href = href
     this.subject = subject

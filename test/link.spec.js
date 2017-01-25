@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Link, LinkType} from '../src'
+import {Link, LinkType, MaybeLinkType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 function validateLink (link) {
@@ -56,5 +54,17 @@ describe('Link', () => {
     it('should exist', () => {
       expect(Link.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#Link')
     })
+  })
+})
+
+describe('MaybeLinkType', () => {
+  it('should accept empty value', () => {
+    MaybeLinkType()
+  })
+  it('should accept correct value', () => {
+    MaybeLinkType(new Link(
+      new URIValue('http://example.com/some-item/42'),
+      new URIValue('http://example.com/jsonld/some')
+    ))
   })
 })

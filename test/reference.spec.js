@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Reference, ReferenceType} from '../src'
+import {Reference, ReferenceType, MaybeReferenceType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 function validateReference (reference) {
@@ -42,5 +40,17 @@ describe('Reference', () => {
     it('should exist', () => {
       expect(Reference.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#Reference')
     })
+  })
+})
+
+describe('MaybeReferenceType', () => {
+  it('should accept empty value', () => {
+    MaybeReferenceType()
+  })
+  it('should accept correct value', () => {
+    MaybeReferenceType(new Reference(
+      new URIValue('http://example.com/some-item/42'),
+      new URIValue('http://example.com/jsonld/some')
+    ))
   })
 })

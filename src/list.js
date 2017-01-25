@@ -24,10 +24,10 @@ export class List {
    * @param {Array<Link>} links
    */
   constructor (items, total, itemsPerPage, links = []) {
-    ModelListType(items)
-    ZeroOrPositiveIntegerType(total)
-    PositiveIntegerType(itemsPerPage)
-    LinkListType(links)
+    ModelListType(items, ['List', 'items:?ModelList'])
+    ZeroOrPositiveIntegerType(total, ['List', 'total:Integer >= 0'])
+    PositiveIntegerType(itemsPerPage, ['List', 'itemsPerPage:Integer > 0'])
+    LinkListType(links, ['List', 'links:LinkList'])
     this.$context = $context
     this.$links = links
     this.items = items

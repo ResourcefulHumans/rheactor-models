@@ -1,8 +1,6 @@
-'use strict'
-
 /* global describe, it */
 
-import {Status, StatusType} from '../src'
+import {Status, StatusType, MaybeStatusType} from '../src'
 import {expect} from 'chai'
 
 const now = new Date()
@@ -43,3 +41,13 @@ describe('Status', function () {
     })
   })
 })
+
+describe('MaybeStatusType', () => {
+  it('should accept empty value', () => {
+    MaybeStatusType()
+  })
+  it('should accept correct value', () => {
+    MaybeStatusType(new Status('ok', now, '1.8.0+production.1483709132405'))
+  })
+})
+

@@ -1,8 +1,6 @@
-'use strict'
-
 /* global describe, it */
 
-import {JsonWebToken, JsonWebTokenType} from '../src'
+import {JsonWebToken, JsonWebTokenType, MaybeJsonWebTokenType} from '../src'
 import {expect} from 'chai'
 import jwt from 'jsonwebtoken'
 
@@ -55,5 +53,15 @@ describe('JsonWebToken', function () {
     it('should exist', () => {
       expect(JsonWebToken.$context.toString()).to.equal('https://tools.ietf.org/html/rfc7519')
     })
+  })
+})
+
+describe('MaybeJsonWebTokenType', () => {
+  it('should accept empty value', () => {
+    MaybeJsonWebTokenType()
+  })
+  it('should accept correct value', () => {
+    const token = jwt.sign({foo: 'bar'}, 'mysecret', {algorithm: 'HS256', issuer: 'test', subject: 'foo', expiresIn: 60 * 60, notBefore: -60})
+    MaybeJsonWebTokenType(new JsonWebToken(token))
   })
 })

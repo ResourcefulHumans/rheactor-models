@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Model, ModelType} from '../src'
+import {Model, ModelType, MaybeModelType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('http://example.com/jsonld/some')
@@ -16,15 +14,11 @@ function validateModel (model) {
 describe('Model', () => {
   describe('constructor()', () => {
     it('should accept values', () => {
-      const model = new Model({
-        $context: $context
-      })
+      const model = new Model({$context})
       validateModel(model)
     })
     it('should parse it\'s own values', () => {
-      const model = new Model({
-        $context: $context
-      })
+      const model = new Model({$context})
       const model2 = new Model({
         $context: model.$context
       })
@@ -34,10 +28,17 @@ describe('Model', () => {
 
   describe('JSON', () => {
     it('should parse it\'s JSON representation', () => {
-      const model = Model.fromJSON(JSON.parse(JSON.stringify(new Model({
-        $context: $context
-      }))))
+      const model = Model.fromJSON(JSON.parse(JSON.stringify(new Model({$context}))))
       validateModel(model)
     })
+  })
+})
+
+describe('MaybeModelType', () => {
+  it('should accept empty value', () => {
+    MaybeModelType()
+  })
+  it('should accept correct value', () => {
+    MaybeModelType(new Model({$context}))
   })
 })

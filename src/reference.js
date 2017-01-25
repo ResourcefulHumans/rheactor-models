@@ -8,8 +8,8 @@ export class Reference {
    * @param {URIValue} subject The context of the referenced item
    */
   constructor ($id, subject) {
-    URIValueType($id)
-    URIValueType(subject)
+    URIValueType($id, ['Reference', '$id:URIValue'])
+    URIValueType(subject, ['Reference', 'subject:URIValue'])
     this.$context = $context
     this.$id = $id
     this.subject = subject

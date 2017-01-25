@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Aggregate, AggregateType} from '../src'
+import {Aggregate, AggregateType, MaybeAggregateType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('http://example.com/jsonld/some')
@@ -90,3 +88,18 @@ describe('Aggregate', () => {
     })
   })
 })
+
+describe('MaybeAggregateType', () => {
+  it('should accept empty value', () => {
+    MaybeAggregateType()
+  })
+  it('should accept correct value', () => {
+    MaybeAggregateType(new Aggregate({
+      $id: 'Some',
+      $version: 1,
+      $createdAt: new Date(),
+      $context: new URIValue('http://example.com')
+    }))
+  })
+})
+

@@ -8,12 +8,12 @@ export class Entity extends Model {
    * @param {{$id: String, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
-    const {$id, $createdAt, $updatedAt, $deletedAt} = fields
+    const {$id, $createdAt, $updatedAt, $deletedAt} = Object.assign({$id: undefined, $createdAt: undefined, $updatedAt: undefined, $deletedAt: undefined}, fields)
     super(fields)
-    StringType($id)
-    MaybeDateType($createdAt)
-    MaybeDateType($updatedAt)
-    MaybeDateType($deletedAt)
+    StringType($id, ['Entity', '$id:String'])
+    MaybeDateType($createdAt, ['Entity', '$createdAt:?Date'])
+    MaybeDateType($updatedAt, ['Entity', '$updatedAt:?Date'])
+    MaybeDateType($deletedAt, ['Entity', '$deletedAt:?Date'])
     this.$id = $id
     this.$createdAt = $createdAt
     this.$updatedAt = $updatedAt

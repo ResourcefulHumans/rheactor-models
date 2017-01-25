@@ -1,8 +1,6 @@
-'use strict'
-
 /* global describe, it */
 
-import {HttpProblem, HttpProblemType} from '../src'
+import {HttpProblem, HttpProblemType, MaybeHttpProblemType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 import {expect} from 'chai'
 
@@ -43,5 +41,14 @@ describe('HttpProblem', function () {
       const problem = HttpProblem.fromJSON(JSON.parse(JSON.stringify(new HttpProblem(new URIValue('http://example.com'), 'title', 123, 'detail'))))
       validateProblem(problem)
     })
+  })
+})
+
+describe('MaybeHttpProblemType', () => {
+  it('should accept empty value', () => {
+    MaybeHttpProblemType()
+  })
+  it('should accept correct value', () => {
+    MaybeHttpProblemType(new HttpProblem(new URIValue('http://example.com'), 'Error', 500))
   })
 })

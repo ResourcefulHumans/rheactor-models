@@ -11,10 +11,10 @@ export class Aggregate extends Entity {
    * @param {{$id: String, $version: Number, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
-    const {$version, $deleted, $createdAt} = fields
-    DateType($createdAt)
-    VersionNumberType($version)
-    BooleanType($deleted || false)
+    const {$version, $deleted, $createdAt} = Object.assign({$version: undefined, $deleted: undefined, $createdAt: undefined}, fields)
+    DateType($createdAt, ['Aggregate', '$createdAt:Date'])
+    VersionNumberType($version, ['Aggregate', '$version:VersionNumber'])
+    BooleanType($deleted || false, ['Aggregate', '$deleted:Boolean'])
     super(fields)
     this.$version = $version
     this.$deleted = !!$deleted
@@ -52,8 +52,8 @@ export class Aggregate extends Entity {
    * @param {Number} newVersion
    */
   updated (updatedAt, newVersion) {
-    MaybeDateType(updatedAt)
-    MaybeVersionNumberType(newVersion)
+    MaybeDateType(updatedAt, ['Aggregate.updated', 'updatedAt:?Date'])
+    MaybeVersionNumberType(newVersion, ['Aggregate.updated', 'newVersion:?VersionNumber'])
     return this.constructor.fromJSON.call(undefined, Object.assign(
       this.toJSON(),
       {
@@ -68,8 +68,8 @@ export class Aggregate extends Entity {
    * @param {Number} newVersion
    */
   deleted (deletedAt, newVersion) {
-    MaybeDateType(deletedAt)
-    MaybeVersionNumberType(newVersion)
+    MaybeDateType(deletedAt, ['Aggregate.deleted', 'deletedAt:?Date'])
+    MaybeVersionNumberType(newVersion, ['Aggregate.updated', 'newVersion:?VersionNumber'])
     return this.constructor.fromJSON.call(undefined, Object.assign(
       this.toJSON(),
       {

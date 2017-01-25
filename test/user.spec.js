@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {User, UserType} from '../src'
+import {User, UserType, MaybeUserType} from '../src'
 import {URIValue, EmailValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#User')
@@ -94,3 +92,21 @@ describe('User', () => {
     })
   })
 })
+
+describe('MaybeUserType', () => {
+  it('should accept empty value', () => {
+    MaybeUserType()
+  })
+  it('should accept correct value', () => {
+    MaybeUserType(new User({
+      $id: 'some-id',
+      $version: 17,
+      $context: $context,
+      $createdAt: new Date('2016-01-01T00:00:00Z'),
+      email: new EmailValue('john@example.com'),
+      firstname: 'John',
+      lastname: 'Doe'
+    }))
+  })
+})
+

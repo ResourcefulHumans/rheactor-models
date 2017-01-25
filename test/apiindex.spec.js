@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Link, Model, Index, IndexType} from '../src'
+import {Link, Model, Index, IndexType, MaybeIndexType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const links = [
@@ -53,5 +51,14 @@ describe('Index', () => {
     it('should exist', () => {
       expect(Index.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#Index')
     })
+  })
+})
+
+describe('MaybeIndexType', () => {
+  it('should accept empty value', () => {
+    MaybeIndexType()
+  })
+  it('should accept correct value', () => {
+    MaybeIndexType(new Index([]))
   })
 })

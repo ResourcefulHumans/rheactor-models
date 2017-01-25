@@ -1,9 +1,7 @@
-'use strict'
-
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Entity, EntityType} from '../src'
+import {Entity, EntityType, MaybeEntityType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('http://example.com/jsonld/some')
@@ -86,5 +84,14 @@ describe('Entity', () => {
       })
       expect(entity.$modifiedAt.toISOString()).to.equal(new Date('2016-01-03T00:00:00Z').toISOString())
     })
+  })
+})
+
+describe('MaybeEntityType', () => {
+  it('should accept empty value', () => {
+    MaybeEntityType()
+  })
+  it('should accept correct value', () => {
+    MaybeEntityType(new Entity({$id: 'Some', $context: new URIValue('http://example.com')}))
   })
 })

@@ -3,7 +3,7 @@ import {String as StringType, Integer as IntegerType, maybe, irreducible, refine
 
 const $context = new URIValue('https://www.ietf.org/id/draft-ietf-appsawg-http-problem-01.txt')
 const MaybeStringType = maybe(StringType)
-const HttpStatusCodeType = maybe(refinement(IntegerType, n => n >= 100 && n < 600, 'HttpStatusCodeType'))
+const HttpStatusCodeType = refinement(IntegerType, n => n >= 100 && n < 600, 'HttpStatusCodeType')
 
 export class HttpProblem {
   /**
@@ -20,10 +20,10 @@ export class HttpProblem {
    * @constructor
    */
   constructor (type, title, status, detail) {
-    URIValueType(type)
-    MaybeStringType(title)
-    HttpStatusCodeType(status)
-    MaybeStringType(detail)
+    URIValueType(type, ['HttpProblem', 'type:URIValue'])
+    MaybeStringType(title, ['HttpProblem', 'title:?String'])
+    HttpStatusCodeType(status, ['HttpProblem', 'status:HttpStatusCode'])
+    MaybeStringType(detail, ['HttpProblem', 'detail:?String'])
     this.name = HttpProblem.name
     this.type = type
     this.title = title

@@ -12,12 +12,12 @@ export class User extends Aggregate {
    */
   constructor (fields) {
     const {email, firstname, lastname, avatar, superUser, active} = fields
-    EmailValueType(email)
-    StringType(firstname)
-    StringType(lastname)
-    MaybeURIValueType(avatar)
-    BooleanType(superUser || false)
-    BooleanType(active || false)
+    EmailValueType(email, ['User', 'email:EmailValue'])
+    StringType(firstname, ['User', 'firstname:String'])
+    StringType(lastname, ['User', 'lastname:String'])
+    MaybeURIValueType(avatar, ['User', 'avatar:?URIValue'])
+    BooleanType(superUser || false, ['User', 'superUser:Boolean'])
+    BooleanType(active || false, ['User', 'active:Boolean'])
     super(Object.assign(fields, {$context}))
     this.email = email
     this.firstname = firstname
