@@ -8,7 +8,7 @@ const $context = new URIValue('http://example.com/jsonld/some')
 
 function validateEntity (entity) {
   EntityType(entity)
-  expect(entity.$id).to.equal('some-id')
+  expect(entity.$id.equals(new URIValue('http://example.com/some-id'))).to.equal(true)
   expect(entity.$context.equals($context)).to.equal(true)
   expect(entity.$createdAt.toISOString()).to.equal(new Date('2016-01-01T00:00:00Z').toISOString())
   expect(entity.$updatedAt.toISOString()).to.equal(new Date('2016-01-02T00:00:00Z').toISOString())
@@ -19,7 +19,7 @@ describe('Entity', () => {
   describe('constructor()', () => {
     it('should accept values', () => {
       const entity = new Entity({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         $updatedAt: new Date('2016-01-02T00:00:00Z'),
@@ -29,7 +29,7 @@ describe('Entity', () => {
     })
     it('should parse it\'s own values', () => {
       const entity = new Entity({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         $updatedAt: new Date('2016-01-02T00:00:00Z'),
@@ -49,7 +49,7 @@ describe('Entity', () => {
   describe('JSON', () => {
     it('should parse it\'s JSON representation', () => {
       const entity = Entity.fromJSON(JSON.parse(JSON.stringify(new Entity({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         $updatedAt: new Date('2016-01-02T00:00:00Z'),
@@ -62,7 +62,7 @@ describe('Entity', () => {
   describe('.$modifiedAt', () => {
     it('should return $createdAt if defined', () => {
       const entity = new Entity({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z')
       })
@@ -70,7 +70,7 @@ describe('Entity', () => {
     })
     it('should return $updatedAt if defined', () => {
       const entity = new Entity({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $context: $context,
         $updatedAt: new Date('2016-01-02T00:00:00Z')
       })
@@ -78,7 +78,7 @@ describe('Entity', () => {
     })
     it('should return $deletedAt if defined', () => {
       const entity = new Entity({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $context: $context,
         $deletedAt: new Date('2016-01-03T00:00:00Z')
       })
@@ -92,6 +92,6 @@ describe('MaybeEntityType', () => {
     MaybeEntityType()
   })
   it('should accept correct value', () => {
-    MaybeEntityType(new Entity({$id: 'Some', $context: new URIValue('http://example.com')}))
+    MaybeEntityType(new Entity({$id: new URIValue('http://example.com/some-id'), $context: new URIValue('http://example.com')}))
   })
 })

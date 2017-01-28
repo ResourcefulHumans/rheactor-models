@@ -1,16 +1,16 @@
-import {URIValue} from 'rheactor-value-objects'
+import {URIValue, URIValueType} from 'rheactor-value-objects'
 import {irreducible, maybe, Date as DateType, String as StringType, struct} from 'tcomb'
 import {Model} from './model'
 const MaybeDateType = maybe(DateType)
 
 export class Entity extends Model {
   /**
-   * @param {{$id: String, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
+   * @param {{$id: URIValue, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
     const {$id, $createdAt, $updatedAt, $deletedAt} = Object.assign({$id: undefined, $createdAt: undefined, $updatedAt: undefined, $deletedAt: undefined}, fields)
     super(fields)
-    StringType($id, ['Entity', '$id:String'])
+    URIValueType($id, ['Entity', '$id:URIValue'])
     MaybeDateType($createdAt, ['Entity', '$createdAt:?Date'])
     MaybeDateType($updatedAt, ['Entity', '$updatedAt:?Date'])
     MaybeDateType($deletedAt, ['Entity', '$deletedAt:?Date'])
@@ -27,7 +27,7 @@ export class Entity extends Model {
     return Object.assign(
       super.toJSON(),
       {
-        $id: this.$id,
+        $id: this.$id.toString(),
         $createdAt: this.$createdAt ? this.$createdAt.toISOString() : undefined,
         $updatedAt: this.$updatedAt ? this.$updatedAt.toISOString() : undefined,
         $deletedAt: this.$deletedAt ? this.$deletedAt.toISOString() : undefined
@@ -43,7 +43,7 @@ export class Entity extends Model {
     EntityJSONType(data)
     return new Entity(Object.assign(
       super.fromJSON(data), {
-        $id: data.$id,
+        $id: new URIValue(data.$id),
         $context: new URIValue(data.$context),
         $createdAt: data.$createdAt ? new Date(data.$createdAt) : undefined,
         $updatedAt: data.$updatedAt ? new Date(data.$updatedAt) : undefined,

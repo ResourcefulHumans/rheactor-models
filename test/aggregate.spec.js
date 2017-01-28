@@ -8,7 +8,7 @@ const $context = new URIValue('http://example.com/jsonld/some')
 
 function validateAggregate (aggregate) {
   AggregateType(aggregate)
-  expect(aggregate.$id).to.equal('some-id')
+  expect(aggregate.$id.equals(new URIValue('http://example.com/some-id'))).to.equal(true)
   expect(aggregate.$version).to.equal(17)
   expect(aggregate.$deleted).to.equal(false)
   expect(aggregate.$context.equals($context)).to.equal(true)
@@ -19,7 +19,7 @@ describe('Aggregate', () => {
   describe('constructor()', () => {
     it('should accept values', () => {
       const aggregate = new Aggregate({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $version: 17,
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z')
@@ -28,7 +28,7 @@ describe('Aggregate', () => {
     })
     it('should parse it\'s own values', () => {
       const aggregate = new Aggregate({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $version: 17,
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z')
@@ -46,7 +46,7 @@ describe('Aggregate', () => {
   describe('updated()', () => {
     it('should create a new instance', () => {
       const aggregate = new Aggregate({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $version: 17,
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z')
@@ -62,7 +62,7 @@ describe('Aggregate', () => {
   describe('updated()', () => {
     it('should create a new instance', () => {
       const aggregate = new Aggregate({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $version: 17,
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z')
@@ -79,7 +79,7 @@ describe('Aggregate', () => {
   describe('JSON', () => {
     it('should parse it\'s JSON representation', () => {
       const aggregate = Aggregate.fromJSON(JSON.parse(JSON.stringify(new Aggregate({
-        $id: 'some-id',
+        $id: new URIValue('http://example.com/some-id'),
         $version: 17,
         $context: $context,
         $createdAt: new Date('2016-01-01T00:00:00Z')
@@ -95,7 +95,7 @@ describe('MaybeAggregateType', () => {
   })
   it('should accept correct value', () => {
     MaybeAggregateType(new Aggregate({
-      $id: 'Some',
+      $id: new URIValue('http://example.com/some-id'),
       $version: 1,
       $createdAt: new Date(),
       $context: new URIValue('http://example.com')

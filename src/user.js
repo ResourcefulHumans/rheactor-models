@@ -8,7 +8,7 @@ const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-mod
 
 export class User extends Aggregate {
   /**
-   * @param {{$id: String, $version: Number, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined, email: EmailValue, firstname: String|undefined, lastname: String|undefined, avatar: URIValue|undefined, superUser: Boolean|undefined, active: Boolean|undefined}} fields
+   * @param {{$id: URIValue, $version: Number, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined, email: EmailValue, firstname: String|undefined, lastname: String|undefined, avatar: URIValue|undefined, superUser: Boolean|undefined, active: Boolean|undefined}} fields
    */
   constructor (fields) {
     const {email, firstname, lastname, avatar, superUser, active} = fields

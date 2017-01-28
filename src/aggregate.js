@@ -8,7 +8,7 @@ const MaybeStringType = maybe(StringType)
 
 export class Aggregate extends Entity {
   /**
-   * @param {{$id: String, $version: Number, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
+   * @param {{$id: URIValue, $version: Number, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
     const {$version, $deleted, $createdAt} = Object.assign({$version: undefined, $deleted: undefined, $createdAt: undefined}, fields)
