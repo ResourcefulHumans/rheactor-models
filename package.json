@@ -25,7 +25,7 @@
   "dependencies": {
     "base-64": "^0.1.0",
     "tcomb": "^3.2.16",
-    "rheactor-value-objects": "9.x"
+    "rheactor-value-objects": "^9.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
