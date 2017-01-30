@@ -1,6 +1,6 @@
 import {URIValue} from 'rheactor-value-objects'
 import {Model} from './model'
-import {LinkJSONType} from './link'
+import {Link, LinkJSONType} from './link'
 import {String as StringType, irreducible, refinement, struct, maybe, list} from 'tcomb'
 
 let atobImpl
@@ -72,7 +72,7 @@ export class JsonWebToken extends Model {
    */
   static fromJSON (data) {
     JsonWebTokenJSONType(data)
-    return new JsonWebToken(data.token, data.$links)
+    return new JsonWebToken(data.token, data.$links ? data.$links.map(Link.fromJSON) : [])
   }
 
   /**

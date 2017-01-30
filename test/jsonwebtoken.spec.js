@@ -1,6 +1,7 @@
 /* global describe, it */
 
-import {JsonWebToken, JsonWebTokenType, MaybeJsonWebTokenType} from '../src'
+import {JsonWebToken, JsonWebTokenType, MaybeJsonWebTokenType, Link} from '../src'
+import {URIValue} from 'rheactor-value-objects'
 import {expect} from 'chai'
 import jwt from 'jsonwebtoken'
 
@@ -52,6 +53,25 @@ describe('JsonWebToken', function () {
   describe('$context', () => {
     it('should exist', () => {
       expect(JsonWebToken.$context.toString()).to.equal('https://tools.ietf.org/html/rfc7519')
+    })
+  })
+
+  describe('$links', () => {
+    it('should parse links', () => {
+      const token = jwt.sign({foo: 'bar'}, 'mysecret', {algorithm: 'HS256', issuer: 'test', subject: 'foo', expiresIn: 60 * 60, notBefore: -60})
+      const webtoken = JsonWebToken.fromJSON(JSON.parse(JSON.stringify(new JsonWebToken(token, [new Link(
+        new URIValue('http://127.0.0.1:8080/api/token/verify'),
+        new URIValue('https://tools.ietf.org/html/rfc7519'),
+        false,
+        'token-verify'
+      )
+      ]))))
+      expect(Link.is(webtoken.$links[0]), 'it should be a link').to.equal(true)
+      expect(webtoken.$links[0].rel).to.equal('token-verify')
+      expect(webtoken.$links[0].list, 'it should not be a list').to.equal(false)
+      expect(webtoken.$links[0].$context.equals(Link.$context), 'it should be a link').to.equal(true)
+      expect(webtoken.$links[0].subject.equals(new URIValue('https://tools.ietf.org/html/rfc7519')), 'subject should match').to.equal(true)
+      expect(webtoken.$links[0].href.equals(new URIValue('http://127.0.0.1:8080/api/token/verify')), 'href should match').to.equal(true)
     })
   })
 })
