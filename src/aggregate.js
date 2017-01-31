@@ -58,7 +58,7 @@ export class Aggregate extends Entity {
       this.toJSON(),
       {
         $version: newVersion || this.$version + 1,
-        $updatedAt: updatedAt || new Date().toISOString()
+        $updatedAt: (updatedAt || new Date()).toISOString()
       }
     ))
   }
@@ -75,7 +75,7 @@ export class Aggregate extends Entity {
       {
         $version: newVersion || this.$version + 1,
         $deleted: true,
-        $deletedAt: deletedAt || new Date().toISOString()
+        $deletedAt: (deletedAt || new Date()).toISOString()
       }
     ))
   }
