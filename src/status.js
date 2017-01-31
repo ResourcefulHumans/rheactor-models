@@ -1,33 +1,37 @@
 import {String as StringType, Date as DateType, irreducible, refinement, struct} from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
+import {Model} from './model'
+
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Status')
 
-export class Status {
+export class Status extends Model {
   /**
    * @param {String} status
    * @param {Date} time
    * @param {String} version
    */
   constructor (status, time, version) {
+    super({$context})
     StringType(status)
     DateType(time)
     StringType(version)
     this.status = status
     this.time = time
     this.version = version
-    this.$context = this.constructor.$context
   }
 
   /**
    * @returns {{status: String, time: String, version: String, $context: String}}
    */
   toJSON () {
-    return {
-      status: this.status,
-      time: this.time.toISOString(),
-      version: this.version,
-      $context: this.$context.toString()
-    }
+    return Object.assign(
+      super.toJSON(),
+      {
+        status: this.status,
+        time: this.time.toISOString(),
+        version: this.version
+      }
+    )
   }
 
   /**
