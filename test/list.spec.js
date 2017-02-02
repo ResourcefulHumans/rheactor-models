@@ -53,6 +53,31 @@ describe('List', () => {
     })
   })
 
+  describe('from / to', () => {
+    it('should have the correct values on lists with offset', () => {
+      [
+        [new List(items, 1, 10, [link], 0), 1, 1],
+        [new List(items, 9, 10, [link], 0), 1, 9],
+        [new List(items, 10, 10, [link], 0), 1, 10],
+        [new List(items, 11, 10, [link], 0), 1, 10],
+        [new List(items, 19, 10, [link], 10), 11, 19],
+        [new List(items, 20, 10, [link], 10), 11, 20],
+        [new List(items, 21, 10, [link], 10), 11, 20]
+      ].map(data => {
+        const list = data[0]
+        const from = data[1]
+        const to = data[2]
+        expect(list.from, `list.from should equal ${from}`).to.equal(from)
+        expect(list.to, `list.from should equal ${to}`).to.equal(to)
+      })
+    })
+    it('should be undefined on lists without offset', () => {
+      const list = new List(items, 1, 10, [link])
+      expect(list.from).to.equal(undefined)
+      expect(list.to).to.equal(undefined)
+    })
+  })
+
   describe('JSON', () => {
     it('should parse it\'s JSON representation', () => {
       const list = List.fromJSON(JSON.parse(JSON.stringify(new List(items, 1, 10, [link]))), Model.fromJSON)

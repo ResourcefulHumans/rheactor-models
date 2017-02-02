@@ -5,7 +5,8 @@ import {
   irreducible,
   refinement,
   list,
-  struct
+  struct,
+  maybe
 } from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
 import {ModelType} from './model'
@@ -13,6 +14,8 @@ import {Link, LinkType, LinkJSONType} from './link'
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#List')
 const PositiveIntegerType = refinement(IntegerType, n => n > 0, 'PositiveIntegerType')
 const ZeroOrPositiveIntegerType = refinement(IntegerType, n => n >= 0, 'ZeroOrPositiveIntegerType')
+const MaybeZeroOrPositiveIntegerType = maybe(ZeroOrPositiveIntegerType)
+
 const ModelListType = list(ModelType)
 const LinkListType = list(LinkType)
 
@@ -22,12 +25,14 @@ export class List {
    * @param {Number} total
    * @param {Number} itemsPerPage
    * @param {Array<Link>} links
+   * @param {Number} offset (optional)
    */
-  constructor (items, total, itemsPerPage, links = []) {
+  constructor (items, total, itemsPerPage, links = [], offset) {
     ModelListType(items, ['List', 'items:?ModelList'])
     ZeroOrPositiveIntegerType(total, ['List', 'total:Integer >= 0'])
     PositiveIntegerType(itemsPerPage, ['List', 'itemsPerPage:Integer > 0'])
     LinkListType(links, ['List', 'links:LinkList'])
+    MaybeZeroOrPositiveIntegerType(offset, ['List', 'offset:?Integer >= 0'])
     this.$context = $context
     this.$links = links
     this.items = items
@@ -35,6 +40,23 @@ export class List {
     this.itemsPerPage = itemsPerPage
     this.hasNext = this.$links.filter(link => link.rel === 'next').length > 0
     this.hasPrev = this.$links.filter(link => link.rel === 'prev').length > 0
+    this.offset = offset
+  }
+
+  /**
+   * @return {Number|undefined}
+   */
+  get from () {
+    if (typeof this.offset === 'undefined') return
+    return this.offset + 1
+  }
+
+  /**
+   * @return {Number|undefined}
+   */
+  get to () {
+    if (typeof this.offset === 'undefined') return
+    return Math.min(this.offset + this.itemsPerPage, this.total)
   }
 
   /**
