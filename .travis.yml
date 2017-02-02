@@ -10,10 +10,9 @@ node_js:
 before_install:
   - npm install -g npm-install-peers
 install:
-  - npm-install-peers
   - npm install
-before_script:
   - npm prune
+  - npm-install-peers
 script:
   - npm run lint
   - npm run test:coverage-travis
