@@ -60,7 +60,7 @@ export class List {
   }
 
   /**
-   * @returns {{$context: String, $links: Array<Link>, items: Array<Link>, total: Number, itemsPerPage: Number, hasNext: Boolean, hasPrev: Boolean}}
+   * @returns {{$context: String, $links: Array<Link>, items: Array<Link>, total: Number, itemsPerPage: Number, hasNext: Boolean, hasPrev: Boolean, offset: Number|undefined}}
    */
   toJSON () {
     const d = {
@@ -70,14 +70,15 @@ export class List {
       itemsPerPage: this.itemsPerPage,
       hasNext: this.hasNext,
       hasPrev: this.hasPrev,
-      $links: []
+      $links: [],
+      offset: this.offset
     }
     if (this.$links.length) d.$links = this.$links.map(link => link.toJSON())
     return d
   }
 
   /**
-   * @param {{$context: String, $links: Array<Link>, items: Array<Link>, total: Number, itemsPerPage: Number, hasNext: Boolean, hasPrev: Boolean}} data
+   * @param {{$context: String, $links: Array<Link>, items: Array<Link>, total: Number, itemsPerPage: Number, hasNext: Boolean, hasPrev: Boolean, offset: Number|undefined}} data
    * @param {function} transformer item transformer
    * @returns {List}
    */
@@ -88,7 +89,8 @@ export class List {
       data.items.map(transformer),
       data.total,
       data.itemsPerPage,
-      data.$links ? data.$links.map(Link.fromJSON) : []
+      data.$links ? data.$links.map(Link.fromJSON) : [],
+      data.offset
     )
   }
 

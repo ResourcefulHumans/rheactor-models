@@ -34,20 +34,22 @@ function validateList (list) {
   expect(list.hasNext).to.equal(true)
   expect(list.hasPrev).to.equal(false)
   expect(list.$links).to.deep.equal([link])
+  expect(list.offset).to.equal(50)
 }
 describe('List', () => {
   describe('constructor()', () => {
     it('should accept values', () => {
-      const list = new List(items, 1, 10, [link])
+      const list = new List(items, 1, 10, [link], 50)
       validateList(list)
     })
     it('should parse it\'s own values', () => {
-      const list = new List(items, 1, 10, [link])
+      const list = new List(items, 1, 10, [link], 50)
       const list2 = new List(
         list.items,
         list.total,
         list.itemsPerPage,
-        list.$links
+        list.$links,
+        list.offset
       )
       validateList(list2)
     })
@@ -80,7 +82,7 @@ describe('List', () => {
 
   describe('JSON', () => {
     it('should parse it\'s JSON representation', () => {
-      const list = List.fromJSON(JSON.parse(JSON.stringify(new List(items, 1, 10, [link]))), Model.fromJSON)
+      const list = List.fromJSON(JSON.parse(JSON.stringify(new List(items, 1, 10, [link], 50))), Model.fromJSON)
       validateList(list)
     })
 
@@ -88,6 +90,17 @@ describe('List', () => {
       let jsondata = JSON.parse(JSON.stringify(new List([], 0, 10)))
       expect(jsondata.items, 'if empty items given, it should be empty in JSON').to.be.instanceof(Array)
       expect(jsondata.$links, 'if empty $links given, it should be empty in JSON').to.be.instanceof(Array)
+    })
+
+    it('should allow for empty offset', () => {
+      const list = List.fromJSON(JSON.parse(JSON.stringify(new List(items, 1, 10, [link]))), Model.fromJSON)
+      expect(list.$context.equals(List.$context)).to.equal(true)
+      expect(list.itemsPerPage).to.equal(10)
+      expect(list.total).to.equal(1)
+      expect(list.hasNext).to.equal(true)
+      expect(list.hasPrev).to.equal(false)
+      expect(list.$links).to.deep.equal([link])
+      expect(list.offset).to.equal(undefined)
     })
   })
 
