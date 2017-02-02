@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/ResourcefulHumans/rheactor-models#readme",
   "dependencies": {
-    "base-64": "^0.1.0",
+    "base-64": "^0.1.0"
+  },
+  "peerDependencies": {
     "tcomb": "^3.2.16",
     "rheactor-value-objects": "9.x"
   },
