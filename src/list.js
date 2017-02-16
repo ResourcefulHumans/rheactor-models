@@ -48,7 +48,7 @@ export class List {
    */
   get from () {
     if (typeof this.offset === 'undefined') return
-    return this.offset + 1
+    return this.total > 0 ? this.offset + 1 : 0
   }
 
   /**

@@ -78,6 +78,11 @@ describe('List', () => {
       expect(list.from).to.equal(undefined)
       expect(list.to).to.equal(undefined)
     })
+    it('should be zero if result is empty', () => {
+      const l = new List(items, 0, 10, [link], 0)
+      expect(l.from, 'from should be zero on an empty list').to.equal(0)
+      expect(l.to, 'to should be zero on an empty list').to.equal(0)
+    })
   })
 
   describe('JSON', () => {
