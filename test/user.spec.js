@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {User, UserType, MaybeUserType} from '../src'
+import {User, UserType, MaybeUserType, MaybeUserJSONType} from '../src'
 import {URIValue, EmailValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#User')
@@ -110,3 +110,19 @@ describe('MaybeUserType', () => {
   })
 })
 
+describe('MaybeUserJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeUserJSONType()
+  })
+  it('should accept correct value', () => {
+    MaybeUserJSONType(new User({
+      $id: new URIValue('http://example.com/some-id'),
+      $version: 17,
+      $context: $context,
+      $createdAt: new Date('2016-01-01T00:00:00Z'),
+      email: new EmailValue('john@example.com'),
+      firstname: 'John',
+      lastname: 'Doe'
+    }).toJSON())
+  })
+})

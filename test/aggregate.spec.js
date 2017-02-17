@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Aggregate, AggregateType, MaybeAggregateType} from '../src'
+import {Aggregate, AggregateType, MaybeAggregateType, MaybeAggregateJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('http://example.com/jsonld/some')
@@ -100,6 +100,20 @@ describe('MaybeAggregateType', () => {
       $createdAt: new Date(),
       $context: new URIValue('http://example.com')
     }))
+  })
+})
+
+describe('MaybeAggregateJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeAggregateJSONType()
+  })
+  it('should accept correct value', () => {
+    MaybeAggregateJSONType(new Aggregate({
+      $id: new URIValue('http://example.com/some-id'),
+      $version: 1,
+      $createdAt: new Date(),
+      $context: new URIValue('http://example.com')
+    }).toJSON())
   })
 })
 

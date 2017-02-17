@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Link, LinkType, MaybeLinkType} from '../src'
+import {Link, LinkType, MaybeLinkType, MaybeLinkJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 function validateLink (link) {
@@ -66,5 +66,17 @@ describe('MaybeLinkType', () => {
       new URIValue('http://example.com/some-item/42'),
       new URIValue('http://example.com/jsonld/some')
     ))
+  })
+})
+
+describe('MaybeLinkJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeLinkJSONType()
+  })
+  it('should accept correct value', () => {
+    MaybeLinkJSONType(new Link(
+      new URIValue('http://example.com/some-item/42'),
+      new URIValue('http://example.com/jsonld/some')
+    ).toJSON())
   })
 })

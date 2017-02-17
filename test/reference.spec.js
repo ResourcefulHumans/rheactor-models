@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Reference, ReferenceType, MaybeReferenceType} from '../src'
+import {Reference, ReferenceType, MaybeReferenceType, MaybeReferenceJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 function validateReference (reference) {
@@ -52,5 +52,17 @@ describe('MaybeReferenceType', () => {
       new URIValue('http://example.com/some-item/42'),
       new URIValue('http://example.com/jsonld/some')
     ))
+  })
+})
+
+describe('MaybeReferenceJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeReferenceJSONType()
+  })
+  it('should accept correct value', () => {
+    MaybeReferenceJSONType(new Reference(
+      new URIValue('http://example.com/some-item/42'),
+      new URIValue('http://example.com/jsonld/some')
+    ).toJSON())
   })
 })

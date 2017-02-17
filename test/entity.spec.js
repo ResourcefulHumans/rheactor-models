@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Entity, EntityType, MaybeEntityType} from '../src'
+import {Entity, EntityType, MaybeEntityType, MaybeEntityJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const $context = new URIValue('http://example.com/jsonld/some')
@@ -93,5 +93,14 @@ describe('MaybeEntityType', () => {
   })
   it('should accept correct value', () => {
     MaybeEntityType(new Entity({$id: new URIValue('http://example.com/some-id'), $context: new URIValue('http://example.com')}))
+  })
+})
+
+describe('MaybeEntityJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeEntityJSONType()
+  })
+  it('should accept correct value', () => {
+    MaybeEntityJSONType(new Entity({$id: new URIValue('http://example.com/some-id'), $context: new URIValue('http://example.com')}).toJSON())
   })
 })

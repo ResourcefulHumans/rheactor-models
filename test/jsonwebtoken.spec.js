@@ -1,6 +1,6 @@
 /* global describe, it */
 
-import {JsonWebToken, JsonWebTokenType, MaybeJsonWebTokenType, Link} from '../src'
+import {JsonWebToken, JsonWebTokenType, MaybeJsonWebTokenType, Link, MaybeJsonWebTokenJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 import {expect} from 'chai'
 import jwt from 'jsonwebtoken'
@@ -83,5 +83,15 @@ describe('MaybeJsonWebTokenType', () => {
   it('should accept correct value', () => {
     const token = jwt.sign({foo: 'bar'}, 'mysecret', {algorithm: 'HS256', issuer: 'test', subject: 'foo', expiresIn: 60 * 60, notBefore: -60})
     MaybeJsonWebTokenType(new JsonWebToken(token))
+  })
+})
+
+describe('MaybeJsonWebTokenJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeJsonWebTokenJSONType()
+  })
+  it('should accept correct value', () => {
+    const token = jwt.sign({foo: 'bar'}, 'mysecret', {algorithm: 'HS256', issuer: 'test', subject: 'foo', expiresIn: 60 * 60, notBefore: -60})
+    MaybeJsonWebTokenJSONType(new JsonWebToken(token).toJSON())
   })
 })

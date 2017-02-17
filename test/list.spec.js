@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Link, Model, List, ListType, MaybeListType} from '../src'
+import {Link, Model, List, ListType, MaybeListType, MaybeListJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 const items = [new Model({
@@ -122,5 +122,14 @@ describe('MaybeListType', () => {
   })
   it('should accept correct value', () => {
     MaybeListType(new List(items, 1, 10, [link]))
+  })
+})
+
+describe('MaybeListJSONType', () => {
+  it('should accept empty value', () => {
+    MaybeListJSONType()
+  })
+  it('should accept correct value', () => {
+    MaybeListJSONType(new List(items, 1, 10, [link]).toJSON())
   })
 })
