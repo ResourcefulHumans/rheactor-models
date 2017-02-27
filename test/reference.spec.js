@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import {Reference, ReferenceType, MaybeReferenceType, MaybeReferenceJSONType} from '../src'
+import {Reference, ReferenceType, MaybeReferenceType, MaybeReferenceJSONType, Entity, Aggregate} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 
 function validateReference (reference) {
@@ -39,6 +39,26 @@ describe('Reference', () => {
   describe('$context', () => {
     it('should exist', () => {
       expect(Reference.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#Reference')
+    })
+  })
+
+  describe('fromEntity()', () => {
+    it('should create an instance from an entity', () => {
+      const entity = new Entity({
+        $id: new URIValue('http://example.com/some-item/42'),
+        $context: new URIValue('http://example.com/jsonld/some')
+      })
+      validateReference(Reference.fromEntity(entity))
+    })
+
+    it('should create an instance from an aggregate', () => {
+      const aggregate = new Aggregate({
+        $id: new URIValue('http://example.com/some-item/42'),
+        $context: new URIValue('http://example.com/jsonld/some'),
+        $version: 17,
+        $createdAt: new Date('2016-01-01T00:00:00Z')
+      })
+      validateReference(Reference.fromEntity(aggregate))
     })
   })
 })

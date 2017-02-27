@@ -1,5 +1,6 @@
 import {String as StringType, irreducible, struct, refinement} from 'tcomb'
 import {URIValue, URIValueType} from 'rheactor-value-objects'
+import {EntityType} from './'
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Reference')
 
 export class Reference {
@@ -13,6 +14,15 @@ export class Reference {
     this.$context = $context
     this.$id = $id
     this.subject = subject
+  }
+
+  /**
+   * @param {Entity} entity
+   * @returns {Reference}
+   */
+  static fromEntity (entity) {
+    EntityType(entity, ['Reference', 'fromEntity()', 'entity:Entity'])
+    return new Reference(entity.$id, entity.$context)
   }
 
   /**
