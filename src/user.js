@@ -1,23 +1,25 @@
 import {Aggregate, VersionNumberType} from './aggregate'
 import {EmailValue, EmailValueType, URIValue, MaybeURIValueType} from 'rheactor-value-objects'
-import {maybe, irreducible, String as StringType, Boolean as BooleanType, struct} from 'tcomb'
+import {maybe, irreducible, String as StringType, Any as AnyType, Boolean as BooleanType, struct, dict} from 'tcomb'
 const MaybeBooleanType = maybe(BooleanType)
 const MaybeStringType = maybe(StringType)
+const PreferencesType = dict(StringType, AnyType)
 
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#User')
 
 export class User extends Aggregate {
   /**
-   * @param {{$id: URIValue, $version: Number, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined, email: EmailValue, firstname: String|undefined, lastname: String|undefined, avatar: URIValue|undefined, superUser: Boolean|undefined, active: Boolean|undefined}} fields
+   * @param {{$id: URIValue, $version: Number, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined, email: EmailValue, firstname: String|undefined, lastname: String|undefined, avatar: URIValue|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: Object|undefined}} fields
    */
   constructor (fields) {
-    const {email, firstname, lastname, avatar, superUser, active} = fields
+    const {email, firstname, lastname, avatar, superUser, active, preferences} = fields
     EmailValueType(email, ['User', 'email:EmailValue'])
     StringType(firstname, ['User', 'firstname:String'])
     StringType(lastname, ['User', 'lastname:String'])
     MaybeURIValueType(avatar, ['User', 'avatar:?URIValue'])
     BooleanType(superUser || false, ['User', 'superUser:Boolean'])
     BooleanType(active || false, ['User', 'active:Boolean'])
+    PreferencesType(preferences || {}, ['User', 'preferences:Map(String: Any)'])
     super(Object.assign(fields, {$context}))
     this.email = email
     this.firstname = firstname
@@ -26,10 +28,11 @@ export class User extends Aggregate {
     this.avatar = avatar
     this.superUser = superUser || false
     this.active = active || false
+    this.preferences = preferences
   }
 
   /**
-   * @returns {{$id: String, $version: Number, $deleted: Boolean, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined}}
+   * @returns {{$id: String, $version: Number, $deleted: Boolean, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}}
    */
   toJSON () {
     return Object.assign(
@@ -40,13 +43,14 @@ export class User extends Aggregate {
         lastname: this.lastname,
         avatar: this.avatar ? this.avatar.toString() : undefined,
         superUser: this.superUser,
-        active: this.active
+        active: this.active,
+        preferences: JSON.stringify(this.preferences)
       }
     )
   }
 
   /**
-   * @param {{$id: String, $context: String, $deleted: Boolean, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined}} data
+   * @param {{$id: String, $context: String, $deleted: Boolean, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}} data
    * @returns {Entity}
    */
   static fromJSON (data) {
@@ -58,7 +62,8 @@ export class User extends Aggregate {
         lastname: data.lastname,
         avatar: data.avatar ? new URIValue(data.avatar) : undefined,
         superUser: data.superUser,
-        active: data.active
+        active: data.active,
+        preferences: JSON.parse(data.preferences)
       })
     )
   }
@@ -93,6 +98,7 @@ export const UserJSONType = struct({
   lastname: StringType,
   avatar: MaybeStringType,
   superUser: MaybeBooleanType,
-  active: MaybeBooleanType
+  active: MaybeBooleanType,
+  preferences: StringType
 }, 'UserJSONType')
 export const UserType = irreducible('UserType', User.is)

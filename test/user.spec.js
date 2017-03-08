@@ -14,6 +14,7 @@ function validateUser (user) {
   expect(user.$context.equals($context)).to.equal(true)
   expect(user.$createdAt.toISOString()).to.equal(new Date('2016-01-01T00:00:00Z').toISOString())
   expect(user.$links).to.deep.equal([])
+  expect(user.preferences).to.deep.equal({'foo': 'bar', 'baz': [1, 2, 3]})
 }
 describe('User', () => {
   describe('constructor()', () => {
@@ -25,7 +26,8 @@ describe('User', () => {
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         email: new EmailValue('john@example.com'),
         firstname: 'John',
-        lastname: 'Doe'
+        lastname: 'Doe',
+        preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
       })
       validateUser(user)
     })
@@ -37,7 +39,8 @@ describe('User', () => {
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         email: new EmailValue('john@example.com'),
         firstname: 'John',
-        lastname: 'Doe'
+        lastname: 'Doe',
+        preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
       })
       const user2 = new User({
         $id: user.$id,
@@ -46,7 +49,8 @@ describe('User', () => {
         $createdAt: user.$createdAt,
         email: user.email,
         firstname: user.firstname,
-        lastname: user.lastname
+        lastname: user.lastname,
+        preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
       })
       validateUser(user2)
     })
@@ -61,7 +65,8 @@ describe('User', () => {
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         email: new EmailValue('john@example.com'),
         firstname: 'John',
-        lastname: 'Doe'
+        lastname: 'Doe',
+        preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
       })
       const updated = user.updated()
       expect(user.$version).to.equal(17)
@@ -80,7 +85,8 @@ describe('User', () => {
         $createdAt: new Date('2016-01-01T00:00:00Z'),
         email: new EmailValue('john@example.com'),
         firstname: 'John',
-        lastname: 'Doe'
+        lastname: 'Doe',
+        preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
       }))))
       validateUser(user)
     })
@@ -105,7 +111,8 @@ describe('MaybeUserType', () => {
       $createdAt: new Date('2016-01-01T00:00:00Z'),
       email: new EmailValue('john@example.com'),
       firstname: 'John',
-      lastname: 'Doe'
+      lastname: 'Doe',
+      preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
     }))
   })
 })
@@ -122,7 +129,8 @@ describe('MaybeUserJSONType', () => {
       $createdAt: new Date('2016-01-01T00:00:00Z'),
       email: new EmailValue('john@example.com'),
       firstname: 'John',
-      lastname: 'Doe'
+      lastname: 'Doe',
+      preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
     }).toJSON())
   })
 })
