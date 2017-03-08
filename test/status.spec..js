@@ -50,4 +50,3 @@ describe('MaybeStatusType', () => {
     MaybeStatusType(new Status('ok', now, '1.8.0+production.1483709132405'))
   })
 })
-
