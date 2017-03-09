@@ -12,20 +12,18 @@ const MaybeStringType = maybe(StringType)
  */
 export class Aggregate extends Entity {
   /**
-   * @param {{$id: URIValue, $version: Number, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
+   * @param {{$id: URIValue, $version: Number, $context: URIValue, $createdAt: Date, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
     const {$version, $deleted, $createdAt} = Object.assign({$version: undefined, $deleted: undefined, $createdAt: undefined}, fields)
     DateType($createdAt, ['Aggregate', '$createdAt:Date'])
-    VersionNumberType($version, ['Aggregate', '$version:VersionNumber'])
-    BooleanType($deleted || false, ['Aggregate', '$deleted:Boolean'])
     super(fields)
-    this.$version = $version
-    this.$deleted = !!$deleted
+    this.$version = VersionNumberType($version, ['Aggregate', '$version:VersionNumber'])
+    this.$deleted = BooleanType($deleted || false, ['Aggregate', '$deleted:Boolean'])
   }
 
   /**
-   * @returns {{$id: String, $version: Number, $deleted: Boolean, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined}}
+   * @returns {{$id: String, $version: Number, $deleted: Boolean, $context: String, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}}
    */
   toJSON () {
     return Object.assign(
@@ -38,7 +36,7 @@ export class Aggregate extends Entity {
   }
 
   /**
-   * @param {{$id: String, $context: String, $deleted: Boolean, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined}} data
+   * @param {{$id: String, $context: String, $deleted: Boolean, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}} data
    * @returns {Entity}
    */
   static fromJSON (data) {
