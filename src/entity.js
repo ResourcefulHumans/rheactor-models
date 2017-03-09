@@ -1,6 +1,7 @@
 import {URIValue, URIValueType} from 'rheactor-value-objects'
 import {irreducible, maybe, Date as DateType, String as StringType, struct} from 'tcomb'
 import {Model} from './model'
+import {MaybeLinkListJSONType} from './link'
 const MaybeDateType = maybe(DateType)
 
 export class Entity extends Model {
@@ -80,9 +81,11 @@ export class Entity extends Model {
 }
 
 export const EntityJSONType = struct({
+  $context: StringType,
   $id: StringType,
   $createdAt: maybe(StringType),
   $updatedAt: maybe(StringType),
-  $deletedAt: maybe(StringType)
+  $deletedAt: maybe(StringType),
+  $links: MaybeLinkListJSONType
 }, 'EntityJSONType')
 export const EntityType = irreducible('EntityType', Entity.is)

@@ -1,5 +1,6 @@
 import {Entity} from './entity'
 import {maybe, refinement, irreducible, Integer as IntegerType, String as StringType, Boolean as BooleanType, Date as DateType, struct} from 'tcomb'
+import {MaybeLinkListJSONType} from './link'
 export const VersionNumberType = refinement(IntegerType, n => n > 0, 'VersionNumberType')
 const MaybeVersionNumberType = maybe(VersionNumberType)
 const MaybeDateType = maybe(DateType)
@@ -92,11 +93,13 @@ export class Aggregate extends Entity {
 }
 
 export const AggregateJSONType = struct({
+  $context: StringType,
   $id: StringType,
   $version: VersionNumberType,
   $deleted: MaybeBooleanType,
   $createdAt: StringType,
   $updatedAt: MaybeStringType,
-  $deletedAt: MaybeStringType
+  $deletedAt: MaybeStringType,
+  $links: MaybeLinkListJSONType
 }, 'AggregateJSONType')
 export const AggregateType = irreducible('AggregateType', Aggregate.is)

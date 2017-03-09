@@ -1,7 +1,6 @@
 import {URIValue, URIValueType} from 'rheactor-value-objects'
-import {irreducible, String as StringType, struct, maybe, list} from 'tcomb'
-import {Link, LinkType, LinkJSONType} from './link'
-const LinkListType = list(LinkType)
+import {irreducible, String as StringType, struct} from 'tcomb'
+import {Link, LinkListType, MaybeLinkListJSONType} from './link'
 
 export class Model {
   /**
@@ -51,6 +50,6 @@ export class Model {
 
 export const ModelJSONType = struct({
   $context: StringType,
-  $links: maybe(list(LinkJSONType))
+  $links: MaybeLinkListJSONType
 }, 'ModelJSONType')
 export const ModelType = irreducible('ModelType', Model.is)
