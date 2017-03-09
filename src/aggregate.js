@@ -7,6 +7,9 @@ const MaybeDateType = maybe(DateType)
 const MaybeBooleanType = maybe(BooleanType)
 const MaybeStringType = maybe(StringType)
 
+/**
+ * @deprecated Use ImmutableAggregate
+ */
 export class Aggregate extends Entity {
   /**
    * @param {{$id: URIValue, $version: Number, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields

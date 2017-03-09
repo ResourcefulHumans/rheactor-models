@@ -1,4 +1,5 @@
 export * from './aggregate'
+export * from './immutable-aggregate'
 export * from './apiindex'
 export * from './entity'
 export * from './http-problem'
