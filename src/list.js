@@ -44,7 +44,7 @@ export class List {
   }
 
   /**
-   * @returns {{$context: String, $links: Array<Link>, items: Array<Link>, total: Number, itemsPerPage: Number, hasNext: Boolean, hasPrev: Boolean, offset: Number|undefined}}
+   * @returns {{$context: String, $contextVersion: Number, $links: Array<Link>, items: Array<Link>, total: Number, itemsPerPage: Number, hasNext: Boolean, hasPrev: Boolean, offset: Number|undefined}}
    */
   toJSON () {
     const d = {

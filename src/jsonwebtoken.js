@@ -57,7 +57,7 @@ export class JsonWebToken extends Model {
   }
 
   /**
-   * @returns {{$context: String, $links: Array<Link>, token: String}}
+   * @returns {{$context: String, $contextVersion: Number, $links: Array<Link>, token: String}}
    */
   toJSON () {
     return Object.assign(

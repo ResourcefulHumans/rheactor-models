@@ -41,7 +41,7 @@ export class ImmutableAggregate extends Entity {
   }
 
   /**
-   * @returns {{$id: String, $version: Number, $context: String, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}}
+   * @returns {{$id: String, $version: Number, $context: String, $contextVersion: Number, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}}
    */
   toJSON () {
     return Object.assign(

@@ -20,7 +20,7 @@ export class Status extends Model {
   }
 
   /**
-   * @returns {{status: String, time: String, version: String, $context: String}}
+   * @returns {{status: String, time: String, version: String, $context: String, $contextVersion: Number}}
    */
   toJSON () {
     return Object.assign(

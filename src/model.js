@@ -14,7 +14,7 @@ export class Model {
   }
 
   /**
-   * @returns {{$context: String, $links: Array<Link>}}
+   * @returns {{$context: String, $contextVersion: Number, $links: Array<Link>}}
    */
   toJSON () {
     const d = {

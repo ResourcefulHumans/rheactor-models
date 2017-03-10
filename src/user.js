@@ -27,7 +27,7 @@ export class User extends Aggregate {
   }
 
   /**
-   * @returns {{$id: String, $version: Number, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}}
+   * @returns {{$id: String, $version: Number, $context: String, $contextVersion: Number, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}}
    */
   toJSON () {
     return Object.assign(

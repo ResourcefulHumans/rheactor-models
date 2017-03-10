@@ -30,7 +30,7 @@ export class HttpProblem {
   }
 
   /**
-   * @param {{$context: String, type: (String|*), title: (String|*), status: (Number|*), detail: (String|*)}} data
+   * @param {{$context: String, type: URIValue, type: String, status: Number, detail: (String|*)}} data
    * @returns {HttpProblem}
    */
   static fromJSON (data) {
@@ -71,7 +71,7 @@ export class HttpProblem {
 HttpProblem.prototype = Object.create(Error.prototype)
 
 /**
- * @returns {{$context: String, type: (String|*), title: (String|*), status: (Number|*), detail: (String|*)}}
+ * @returns {{$context: String, $contextVersion: Number, type: String, type: String, status: Number, detail: (String|*)}}
  */
 HttpProblem.prototype.toJSON = function () {
   return {

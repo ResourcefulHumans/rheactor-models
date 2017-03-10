@@ -22,7 +22,7 @@ export class Link {
   }
 
   /**
-   * @returns {{$context: String, subject: String, href: String, list: Boolean|undefined, rel: String|undefined}}}
+   * @returns {{$context: String, $contextVersion: Number, subject: String, href: String, list: Boolean|undefined, rel: String|undefined}}}
    */
   toJSON () {
     const d = {

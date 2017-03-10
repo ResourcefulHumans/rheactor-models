@@ -28,7 +28,7 @@ export class Reference {
   }
 
   /**
-   * @returns {{$context: String, subject: String, $id: String}}}
+   * @returns {{$context: String, $contextVersion: Number, subject: String, $id: String}}}
    */
   toJSON () {
     return {
