@@ -9,7 +9,6 @@ export class Entity extends Model {
    * @param {{$id: URIValue, $context: URIValue, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
-    const {$id, $createdAt, $updatedAt, $deletedAt} = Object.assign({$id: undefined, $createdAt: undefined, $updatedAt: undefined, $deletedAt: undefined}, fields)
     super(fields)
     this.$id = URIValueType(fields.$id, ['Entity', '$id:URIValue'])
     this.$createdAt = MaybeDateType(fields.$createdAt, ['Entity', '$createdAt:?Date'])

@@ -10,10 +10,9 @@ export class ImmutableAggregate extends Entity {
    * @param {{$id: URIValue, $version: Number, $context: URIValue, $createdAt: Date, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
-    const {$version, $createdAt} = fields
-    DateType($createdAt, ['ImmutableAggregate', '$createdAt:Date']) // $createdAt must be defined
     super(fields)
-    this.$version = VersionNumberType($version, ['ImmutableAggregate', '$version:VersionNumber'])
+    DateType(fields.$createdAt, ['ImmutableAggregate', '$createdAt:Date']) // $createdAt must be defined
+    this.$version = VersionNumberType(fields.$version, ['ImmutableAggregate', '$version:VersionNumber'])
   }
 
   /**

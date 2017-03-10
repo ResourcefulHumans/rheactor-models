@@ -7,11 +7,8 @@ export class Model {
    * @param {{$context: URIValue}} fields
    */
   constructor (fields) {
-    const {$context, $links} = Object.assign({$context: undefined}, fields)
-    URIValueType($context, ['Model', '$context:URIValue'])
-    LinkListType($links || [], ['Model', '$links:LinkList'])
-    this.$context = $context
-    this.$links = $links || []
+    this.$context = URIValueType(fields.$context, ['Model', '$context:URIValue'])
+    this.$links = LinkListType(fields.$links || [], ['Model', '$links:LinkList'])
   }
 
   /**

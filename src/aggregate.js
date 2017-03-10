@@ -14,8 +14,7 @@ export class Aggregate extends Entity {
    * @param {{$id: URIValue, $version: Number, $context: URIValue, $createdAt: Date, $updatedAt: Date|undefined, $deletedAt: Date|undefined}} fields
    */
   constructor (fields) {
-    const {$version, $deleted, $createdAt} = Object.assign({$version: undefined, $deleted: undefined, $createdAt: undefined}, fields)
-    DateType($createdAt, ['Aggregate', '$createdAt:Date'])
+    DateType(fields.$createdAt, ['Aggregate', '$createdAt:Date']) // createdAt must not be undefined
     super(fields)
     this.$version = VersionNumberType(fields.$version, ['Aggregate', '$version:VersionNumber'])
   }
