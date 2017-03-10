@@ -1,4 +1,5 @@
-import {Aggregate, VersionNumberType} from './aggregate'
+import {Aggregate} from './aggregate'
+import {VersionNumberType} from './types'
 import {EmailValue, EmailValueType, URIValue, MaybeURIValueType} from 'rheactor-value-objects'
 import {maybe, irreducible, String as StringType, Any as AnyType, Boolean as BooleanType, struct, dict} from 'tcomb'
 const MaybeBooleanType = maybe(BooleanType)

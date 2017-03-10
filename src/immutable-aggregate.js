@@ -1,6 +1,6 @@
 import {Entity} from './entity'
 import {maybe, irreducible, String as StringType, Date as DateType, struct, Any as AnyType, dict} from 'tcomb'
-import {VersionNumberType} from './aggregate'
+import {VersionNumberType} from './types'
 import {MaybeLinkListJSONType} from './link'
 const MaybeStringType = maybe(StringType)
 const PropsType = dict(StringType, AnyType)

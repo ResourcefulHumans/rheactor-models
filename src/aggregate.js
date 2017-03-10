@@ -1,7 +1,7 @@
 import {Entity} from './entity'
 import {maybe, refinement, irreducible, Integer as IntegerType, String as StringType, Boolean as BooleanType, Date as DateType, struct} from 'tcomb'
 import {MaybeLinkListJSONType} from './link'
-export const VersionNumberType = refinement(IntegerType, n => n > 0, 'VersionNumberType')
+import {VersionNumberType} from './types'
 const MaybeVersionNumberType = maybe(VersionNumberType)
 const MaybeDateType = maybe(DateType)
 const MaybeBooleanType = maybe(BooleanType)
