@@ -26,7 +26,7 @@
     "base-64": "^0.1.0"
   },
   "peerDependencies": {
-    "@resourcefulhumans/rheactor-errors": "1.x",
+    "@resourcefulhumans/rheactor-errors": "^1.1.0",
     "tcomb": "^3.2.16",
     "rheactor-value-objects": "^10.0.0"
   },
