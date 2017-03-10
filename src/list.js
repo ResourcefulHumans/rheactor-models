@@ -1,23 +1,11 @@
-import {
-  String as StringType,
-  Integer as IntegerType,
-  Function as FunctionType,
-  irreducible,
-  refinement,
-  list,
-  struct,
-  maybe
-} from 'tcomb'
+import {Function as FunctionType, maybe, refinement, Integer as IntegerType, irreducible, String as StringType, struct, list} from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
-import {ModelType} from './model'
-import {Link, LinkType, LinkJSONType} from './link'
-const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#List')
-const PositiveIntegerType = refinement(IntegerType, n => n > 0, 'PositiveIntegerType')
-const ZeroOrPositiveIntegerType = refinement(IntegerType, n => n >= 0, 'ZeroOrPositiveIntegerType')
-const MaybeZeroOrPositiveIntegerType = maybe(ZeroOrPositiveIntegerType)
+import {Link, LinkListType, LinkJSONType} from './link'
+import {ModelListType} from './model'
+import {MaybeVersionNumberType} from './types'
 
-const ModelListType = list(ModelType)
-const LinkListType = list(LinkType)
+const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#List')
+const $contextVersion = 1
 
 export class List {
   /**
@@ -28,19 +16,15 @@ export class List {
    * @param {Number} offset (optional)
    */
   constructor (items, total, itemsPerPage, links = [], offset) {
-    ModelListType(items, ['List', 'items:?ModelList'])
-    ZeroOrPositiveIntegerType(total, ['List', 'total:Integer >= 0'])
-    PositiveIntegerType(itemsPerPage, ['List', 'itemsPerPage:Integer > 0'])
-    LinkListType(links, ['List', 'links:LinkList'])
-    MaybeZeroOrPositiveIntegerType(offset, ['List', 'offset:?Integer >= 0'])
     this.$context = $context
-    this.$links = links
-    this.items = items
-    this.total = total
-    this.itemsPerPage = itemsPerPage
+    this.$contextVersion = $contextVersion
+    this.$links = LinkListType(links, ['List', 'links:LinkList'])
+    this.items = ModelListType(items, ['List', 'items:?ModelList'])
+    this.total = ZeroOrPositiveIntegerType(total, ['List', 'total:Integer >= 0'])
+    this.itemsPerPage = PositiveIntegerType(itemsPerPage, ['List', 'itemsPerPage:Integer > 0'])
     this.hasNext = this.$links.filter(link => link.rel === 'next').length > 0
     this.hasPrev = this.$links.filter(link => link.rel === 'prev').length > 0
-    this.offset = offset
+    this.offset = MaybeZeroOrPositiveIntegerType(offset, ['List', 'offset:?Integer >= 0'])
   }
 
   /**
@@ -65,6 +49,7 @@ export class List {
   toJSON () {
     const d = {
       $context: this.$context.toString(),
+      $contextVersion: this.$contextVersion,
       items: this.items.map(item => item.toJSON()),
       total: this.total,
       itemsPerPage: this.itemsPerPage,
@@ -102,6 +87,13 @@ export class List {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type List
    *
    * @param {object} x
@@ -112,10 +104,17 @@ export class List {
   }
 }
 
+export const PositiveIntegerType = refinement(IntegerType, n => n > 0, 'PositiveIntegerType')
+export const ZeroOrPositiveIntegerType = refinement(IntegerType, n => n >= 0, 'ZeroOrPositiveIntegerType')
+export const MaybeZeroOrPositiveIntegerType = maybe(ZeroOrPositiveIntegerType)
+
+export const ListType = irreducible('ListType', List.is)
+export const MaybeListType = maybe(ListType)
 export const ListJSONType = struct({
-  $context: refinement(StringType, s => s === $context.toString(), 'ListContext'),
+  $context: refinement(StringType, s => s === List.$context.toString(), 'ListContext'),
+  $contextVersion: MaybeVersionNumberType,
   $links: list(LinkJSONType),
   total: ZeroOrPositiveIntegerType,
   itemsPerPage: PositiveIntegerType
 }, 'ListJSONType')
-export const ListType = irreducible('ListType', List.is)
+export const MaybeListJSONType = maybe(ListJSONType)

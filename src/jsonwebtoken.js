@@ -1,7 +1,8 @@
 import {URIValue} from 'rheactor-value-objects'
 import {Model} from './model'
-import {Link, LinkJSONType} from './link'
-import {String as StringType, irreducible, refinement, struct, maybe, list} from 'tcomb'
+import {String as StringType, maybe, refinement, irreducible, struct} from 'tcomb'
+import {MaybeVersionNumberType} from './types'
+import {Link, MaybeLinkListJSONType} from './link'
 
 let atobImpl
 
@@ -17,6 +18,7 @@ if (typeof atob === 'undefined') {
 }
 
 const $context = new URIValue('https://tools.ietf.org/html/rfc7519')
+const $contextVersion = 2
 
 export class JsonWebToken extends Model {
   /**
@@ -24,7 +26,7 @@ export class JsonWebToken extends Model {
    * @param {Array.<Link>} $links
    */
   constructor (token, $links) {
-    super({$context, $links})
+    super({$context, $contextVersion, $links})
     StringType(token)
     const data = JSON.parse(atobImpl(token.split('.')[1]))
     this.iss = undefined // Issuer
@@ -90,6 +92,13 @@ export class JsonWebToken extends Model {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type JsonWebToken
    *
    * @param {object} x
@@ -100,9 +109,12 @@ export class JsonWebToken extends Model {
   }
 }
 
-export const JsonWebTokenJSONType = struct({
-  $context: refinement(StringType, s => s === $context.toString(), 'JsonWebTokenContext'),
-  token: StringType,
-  $links: maybe(list(LinkJSONType))
-}, 'JsonWebTokenJSONType')
 export const JsonWebTokenType = irreducible('JsonWebTokenType', JsonWebToken.is)
+export const JsonWebTokenJSONType = struct({
+  $context: refinement(StringType, s => s === JsonWebToken.$context.toString(), 'JsonWebTokenContext'),
+  $contextVersion: MaybeVersionNumberType,
+  token: StringType,
+  $links: MaybeLinkListJSONType
+}, 'JsonWebTokenJSONType')
+export const MaybeJsonWebTokenType = maybe(JsonWebTokenType)
+export const MaybeJsonWebTokenJSONType = maybe(JsonWebTokenJSONType)

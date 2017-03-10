@@ -1,7 +1,10 @@
-import {String as StringType, irreducible, struct, refinement} from 'tcomb'
 import {URIValue, URIValueType} from 'rheactor-value-objects'
-import {EntityType} from './'
+import {MaybeVersionNumberType} from './types'
+import {EntityType} from './entity'
+import {maybe, refinement, irreducible, String as StringType, struct} from 'tcomb'
+
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Reference')
+const $contextVersion = 1
 
 export class Reference {
   /**
@@ -9,11 +12,10 @@ export class Reference {
    * @param {URIValue} subject The context of the referenced item
    */
   constructor ($id, subject) {
-    URIValueType($id, ['Reference', '$id:URIValue'])
-    URIValueType(subject, ['Reference', 'subject:URIValue'])
     this.$context = $context
-    this.$id = $id
-    this.subject = subject
+    this.$contextVersion = $contextVersion
+    this.$id = URIValueType($id, ['Reference', '$id:URIValue'])
+    this.subject = URIValueType(subject, ['Reference', 'subject:URIValue'])
   }
 
   /**
@@ -29,12 +31,12 @@ export class Reference {
    * @returns {{$context: String, subject: String, $id: String}}}
    */
   toJSON () {
-    const d = {
+    return {
       $context: this.$context.toString(),
+      $contextVersion: this.$contextVersion,
       subject: this.subject.toString(),
       $id: this.$id.toString()
     }
-    return d
   }
 
   /**
@@ -55,6 +57,13 @@ export class Reference {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type Reference
    *
    * @param {object} x
@@ -65,9 +74,12 @@ export class Reference {
   }
 }
 
+export const ReferenceType = irreducible('ReferenceType', Reference.is)
+export const MaybeReferenceType = maybe(ReferenceType)
 export const ReferenceJSONType = struct({
-  $context: refinement(StringType, s => s === $context.toString(), 'ReferenceContext'),
+  $context: refinement(StringType, s => s === Reference.$context.toString(), 'ReferenceContext'),
+  $contextVersion: MaybeVersionNumberType,
   subject: StringType,
   $id: StringType
 }, 'ReferenceJSONType')
-export const ReferenceType = irreducible('ReferenceType', Reference.is)
+export const MaybeReferenceJSONType = maybe(ReferenceJSONType)

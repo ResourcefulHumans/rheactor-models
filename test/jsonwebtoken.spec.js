@@ -1,5 +1,4 @@
 /* global describe, it */
-
 import {JsonWebToken, JsonWebTokenType, MaybeJsonWebTokenType, Link, MaybeJsonWebTokenJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
 import {expect} from 'chai'
@@ -7,6 +6,8 @@ import jwt from 'jsonwebtoken'
 
 function validateToken (webtoken) {
   expect(webtoken).to.be.instanceof(JsonWebToken)
+  expect(webtoken.$context.toString()).to.be.equal('https://tools.ietf.org/html/rfc7519')
+  expect(webtoken.$contextVersion).to.be.equal(2)
   expect(webtoken.iss).to.equal('test')
   expect(webtoken.sub).to.equal('foo')
   const nbfTime = Date.now() - 60000
@@ -53,6 +54,16 @@ describe('JsonWebToken', function () {
   describe('$context', () => {
     it('should exist', () => {
       expect(JsonWebToken.$context.toString()).to.equal('https://tools.ietf.org/html/rfc7519')
+    })
+  })
+
+  describe('$contextVersion', () => {
+    it('should exist', () => {
+      expect(JsonWebToken.$contextVersion).to.be.equal(2)
+    })
+    it('should be contained in the JSON', () => {
+      const token = jwt.sign({foo: 'bar'}, 'mysecret', {algorithm: 'HS256', issuer: 'test', subject: 'foo', expiresIn: 60 * 60, notBefore: -60})
+      expect(new JsonWebToken(token).toJSON().$contextVersion).to.equal(2)
     })
   })
 

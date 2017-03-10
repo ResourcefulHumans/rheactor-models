@@ -1,35 +1,29 @@
 import {Aggregate} from './aggregate'
-import {VersionNumberType} from './types'
+import {MaybeStringType, VersionNumberType, MaybeVersionNumberType, MaybeBooleanType} from './types'
+import {MaybeLinkListJSONType} from './link'
 import {EmailValue, EmailValueType, URIValue, MaybeURIValueType} from 'rheactor-value-objects'
-import {maybe, irreducible, String as StringType, Any as AnyType, Boolean as BooleanType, struct, dict} from 'tcomb'
-const MaybeBooleanType = maybe(BooleanType)
-const MaybeStringType = maybe(StringType)
+import {String as StringType, Any as AnyType, Boolean as BooleanType, dict, maybe, refinement, irreducible, struct} from 'tcomb'
 const PreferencesType = dict(StringType, AnyType)
 
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#User')
+const $contextVersion = 2
 
 export class User extends Aggregate {
   /**
    * @param {{$id: URIValue, $version: Number, $createdAt: Date|undefined, $updatedAt: Date|undefined, $deletedAt: Date|undefined, email: EmailValue, firstname: String|undefined, lastname: String|undefined, avatar: URIValue|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: Object|undefined}} fields
    */
   constructor (fields) {
-    const {email, firstname, lastname, avatar, superUser, active, preferences} = fields
-    EmailValueType(email, ['User', 'email:EmailValue'])
-    StringType(firstname, ['User', 'firstname:String'])
-    StringType(lastname, ['User', 'lastname:String'])
-    MaybeURIValueType(avatar, ['User', 'avatar:?URIValue'])
-    BooleanType(superUser || false, ['User', 'superUser:Boolean'])
-    BooleanType(active || false, ['User', 'active:Boolean'])
-    PreferencesType(preferences || {}, ['User', 'preferences:Map(String: Any)'])
-    super(Object.assign(fields, {$context}))
-    this.email = email
-    this.firstname = firstname
-    this.lastname = lastname
+    super(Object.assign(fields, {$context, $contextVersion}))
+
+    this.email = EmailValueType(fields.email, ['User', 'email:EmailValue'])
+    this.firstname = StringType(fields.firstname, ['User', 'firstname:String'])
+    this.lastname = StringType(fields.lastname, ['User', 'lastname:String'])
+    this.avatar = MaybeURIValueType(fields.avatar, ['User', 'avatar:?URIValue'])
+    this.superUser = BooleanType(fields.superUser || false, ['User', 'superUser:Boolean'])
+    this.active = BooleanType(fields.active || false, ['User', 'active:Boolean'])
+    this.preferences = PreferencesType(fields.preferences || {}, ['User', 'preferences:Map(String: Any)'])
+
     this.name = [this.firstname, this.lastname].join(' ')
-    this.avatar = avatar
-    this.superUser = superUser || false
-    this.active = active || false
-    this.preferences = preferences
   }
 
   /**
@@ -77,6 +71,13 @@ export class User extends Aggregate {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type User
    *
    * @param {object} x
@@ -87,7 +88,11 @@ export class User extends Aggregate {
   }
 }
 
+export const UserType = irreducible('UserType', User.is)
+export const MaybeUserType = maybe(UserType)
 export const UserJSONType = struct({
+  $context: refinement(StringType, s => s === User.$context.toString(), 'UserContext'),
+  $contextVersion: MaybeVersionNumberType,
   $id: StringType,
   $version: VersionNumberType,
   $createdAt: StringType,
@@ -99,6 +104,7 @@ export const UserJSONType = struct({
   avatar: MaybeStringType,
   superUser: MaybeBooleanType,
   active: MaybeBooleanType,
-  preferences: StringType
+  preferences: StringType,
+  $links: MaybeLinkListJSONType
 }, 'UserJSONType')
-export const UserType = irreducible('UserType', User.is)
+export const MaybeUserJSONType = maybe(UserJSONType)

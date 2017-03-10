@@ -1,7 +1,9 @@
-import {String as StringType, Boolean as BooleanType, irreducible, maybe, struct, refinement, list} from 'tcomb'
+import {Boolean as BooleanType, maybe, refinement, irreducible, String as StringType, struct, list} from 'tcomb'
 import {URIValue, URIValueType} from 'rheactor-value-objects'
+import {MaybeStringType, MaybeVersionNumberType} from './types'
+
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Link')
-const MaybeStringType = maybe(StringType)
+const $contextVersion = 1
 
 export class Link {
   /**
@@ -11,15 +13,12 @@ export class Link {
    * @param {String} rel Label for the relation
    */
   constructor (href, subject, list = false, rel) {
-    URIValueType(href, ['Link', 'href:URIValue'])
-    URIValueType(subject, ['Link', 'subject:URIValue'])
-    BooleanType(list, ['Link', 'list:Boolean'])
-    MaybeStringType(rel, ['Link', 'rel:?String'])
+    this.href = URIValueType(href, ['Link', 'href:URIValue'])
+    this.subject = URIValueType(subject, ['Link', 'subject:URIValue'])
+    this.list = BooleanType(list, ['Link', 'list:Boolean'])
+    this.rel = MaybeStringType(rel, ['Link', 'rel:?String'])
     this.$context = $context
-    this.href = href
-    this.subject = subject
-    this.list = list
-    this.rel = rel
+    this.$contextVersion = $contextVersion
   }
 
   /**
@@ -28,6 +27,7 @@ export class Link {
   toJSON () {
     const d = {
       $context: this.$context.toString(),
+      $contextVersion: this.$contextVersion,
       subject: this.subject.toString(),
       href: this.href.toString()
     }
@@ -54,6 +54,13 @@ export class Link {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type Link
    *
    * @param {object} x
@@ -64,15 +71,18 @@ export class Link {
   }
 }
 
+export const LinkType = irreducible('LinkType', Link.is)
+export const MaybeLinkType = maybe(LinkType)
+export const LinkListType = list(LinkType)
+export const MaybeLinkListType = maybe(LinkListType)
 export const LinkJSONType = struct({
-  $context: refinement(StringType, s => s === $context.toString(), 'LinkContext'),
+  $context: refinement(StringType, s => s === Link.$context.toString(), 'LinkContext'),
+  $contextVersion: MaybeVersionNumberType,
   subject: StringType,
   href: StringType,
   list: maybe(BooleanType),
   rel: maybe(StringType)
 }, 'LinkJSONType')
-export const LinkType = irreducible('LinkType', Link.is)
-export const LinkListType = list(LinkType)
+export const MaybeLinkJSONType = maybe(LinkJSONType)
 export const LinkListJSONType = list(LinkJSONType)
 export const MaybeLinkListJSONType = maybe(LinkListJSONType)
-export const MaybeLinkListType = maybe(LinkListType)

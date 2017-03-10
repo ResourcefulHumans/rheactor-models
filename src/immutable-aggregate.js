@@ -1,8 +1,7 @@
 import {Entity} from './entity'
-import {maybe, irreducible, String as StringType, Date as DateType, struct, Any as AnyType, dict} from 'tcomb'
-import {VersionNumberType} from './types'
+import {String as StringType, Date as DateType, Any as AnyType, dict, maybe, irreducible, struct} from 'tcomb'
+import {MaybeStringType, VersionNumberType, MaybeVersionNumberType} from './types'
 import {MaybeLinkListJSONType} from './link'
-const MaybeStringType = maybe(StringType)
 const PropsType = dict(StringType, AnyType)
 
 export class ImmutableAggregate extends Entity {
@@ -77,8 +76,11 @@ export class ImmutableAggregate extends Entity {
   }
 }
 
+export const ImmutableAggregateType = irreducible('ImmutableAggregateType', ImmutableAggregate.is)
+export const MaybeImmutableAggregateType = maybe(ImmutableAggregateType)
 export const ImmutableAggregateJSONType = struct({
   $context: StringType,
+  $contextVersion: MaybeVersionNumberType,
   $id: StringType,
   $version: VersionNumberType,
   $createdAt: StringType,
@@ -86,4 +88,4 @@ export const ImmutableAggregateJSONType = struct({
   $deletedAt: MaybeStringType,
   $links: MaybeLinkListJSONType
 }, 'ImmutableAggregateJSONType')
-export const ImmutableAggregateType = irreducible('ImmutableAggregateType', ImmutableAggregate.is)
+export const MaybeImmutableAggregateJSONType = maybe(ImmutableAggregateJSONType)

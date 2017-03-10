@@ -1,5 +1,4 @@
 /* global describe, it */
-
 import {expect} from 'chai'
 import {Model, ModelType, MaybeModelType, MaybeModelJSONType} from '../src'
 import {URIValue} from 'rheactor-value-objects'
@@ -30,6 +29,17 @@ describe('Model', () => {
     it('should parse it\'s JSON representation', () => {
       const model = Model.fromJSON(JSON.parse(JSON.stringify(new Model({$context}))))
       validateModel(model)
+    })
+  })
+
+  describe('$contextVersion', () => {
+    it('should default to 1', () => {
+      const model = new Model({$context})
+      expect(model.$contextVersion).to.equal(1)
+    })
+    it('should use provided $contextVersion', () => {
+      const model = new Model({$context, $contextVersion: 2})
+      expect(model.$contextVersion).to.equal(2)
     })
   })
 })

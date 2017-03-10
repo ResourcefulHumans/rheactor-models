@@ -1,6 +1,7 @@
 import {URIValue, URIValueType} from 'rheactor-value-objects'
-import {irreducible, String as StringType, struct} from 'tcomb'
+import {VersionNumberType, MaybeVersionNumberType} from './types'
 import {Link, LinkListType, MaybeLinkListJSONType} from './link'
+import {maybe, irreducible, String as StringType, struct, list} from 'tcomb'
 
 export class Model {
   /**
@@ -8,6 +9,7 @@ export class Model {
    */
   constructor (fields) {
     this.$context = URIValueType(fields.$context, ['Model', '$context:URIValue'])
+    this.$contextVersion = VersionNumberType(fields.$contextVersion || 1, ['Model', '$contextVersion:?VersionNumberType'])
     this.$links = LinkListType(fields.$links || [], ['Model', '$links:LinkList'])
   }
 
@@ -16,7 +18,8 @@ export class Model {
    */
   toJSON () {
     const d = {
-      $context: this.$context.toString()
+      $context: this.$context.toString(),
+      $contextVersion: this.$contextVersion
     }
     if (this.$links.length) d.$links = this.$links.map(link => link.toJSON())
     return d
@@ -30,6 +33,7 @@ export class Model {
     ModelJSONType(data)
     return new Model({
       $context: new URIValue(data.$context),
+      $contextVersion: data.$contextVersion,
       $links: data.$links ? data.$links.map(l => Link.fromJSON(l)) : []
     })
   }
@@ -45,8 +49,12 @@ export class Model {
   }
 }
 
+export const ModelType = irreducible('ModelType', Model.is)
+export const ModelListType = list(ModelType)
+export const MaybeModelType = maybe(ModelType)
 export const ModelJSONType = struct({
   $context: StringType,
+  $contextVersion: MaybeVersionNumberType,
   $links: MaybeLinkListJSONType
 }, 'ModelJSONType')
-export const ModelType = irreducible('ModelType', Model.is)
+export const MaybeModelJSONType = maybe(ModelJSONType)

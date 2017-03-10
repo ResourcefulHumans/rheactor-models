@@ -1,9 +1,9 @@
 import {URIValue, URIValueType} from 'rheactor-value-objects'
-import {String as StringType, Integer as IntegerType, maybe, irreducible, refinement, struct} from 'tcomb'
+import {MaybeStringType, MaybeVersionNumberType} from './types'
+import {maybe, refinement, Integer as IntegerType, irreducible, String as StringType, struct} from 'tcomb'
 
 const $context = new URIValue('https://www.ietf.org/id/draft-ietf-appsawg-http-problem-01.txt')
-const MaybeStringType = maybe(StringType)
-const HttpStatusCodeType = refinement(IntegerType, n => n >= 100 && n < 600, 'HttpStatusCodeType')
+const $contextVersion = 1
 
 export class HttpProblem {
   /**
@@ -20,16 +20,13 @@ export class HttpProblem {
    * @constructor
    */
   constructor (type, title, status, detail) {
-    URIValueType(type, ['HttpProblem', 'type:URIValue'])
-    MaybeStringType(title, ['HttpProblem', 'title:?String'])
-    HttpStatusCodeType(status, ['HttpProblem', 'status:HttpStatusCode'])
-    MaybeStringType(detail, ['HttpProblem', 'detail:?String'])
     this.name = HttpProblem.name
-    this.type = type
-    this.title = title
-    this.status = status
-    this.detail = detail
+    this.type = URIValueType(type, ['HttpProblem', 'type:URIValue'])
+    this.title = MaybeStringType(title, ['HttpProblem', 'title:?String'])
+    this.status = HttpStatusCodeType(status, ['HttpProblem', 'status:HttpStatusCode'])
+    this.detail = MaybeStringType(detail, ['HttpProblem', 'detail:?String'])
     this.$context = $context
+    this.$contextVersion = $contextVersion
   }
 
   /**
@@ -54,6 +51,13 @@ export class HttpProblem {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type HttpProblem
    *
    * @param {object} x
@@ -72,6 +76,7 @@ HttpProblem.prototype = Object.create(Error.prototype)
 HttpProblem.prototype.toJSON = function () {
   return {
     $context: this.$context.toString(),
+    $contextVersion: $contextVersion,
     type: this.type.toString(),
     title: this.title,
     status: this.status,
@@ -79,11 +84,14 @@ HttpProblem.prototype.toJSON = function () {
   }
 }
 
+export const HttpStatusCodeType = refinement(IntegerType, n => n >= 100 && n < 600, 'HttpStatusCodeType')
+export const HttpProblemType = irreducible('HttpProblemType', HttpProblem.is)
+export const MaybeHttpProblemType = maybe(HttpProblemType)
 export const HttpProblemJSONType = struct({
-  $context: refinement(StringType, s => s === $context.toString(), 'HttpProblemContext'),
+  $context: refinement(StringType, s => s === HttpProblem.$context.toString(), 'HttpProblemContext'),
+  $contextVersion: MaybeVersionNumberType,
   type: StringType,
   title: MaybeStringType,
   status: HttpStatusCodeType,
   detail: MaybeStringType
 }, 'HttpProblemJSONType')
-export const HttpProblemType = irreducible('HttpProblemType', HttpProblem.is)

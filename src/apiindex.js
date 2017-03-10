@@ -1,17 +1,19 @@
-import {String as StringType, irreducible, refinement, list, struct} from 'tcomb'
+import {list, maybe, refinement, irreducible, String as StringType, struct} from 'tcomb'
 import {URIValue} from 'rheactor-value-objects'
-import {Link, LinkType, LinkJSONType} from './link'
+import {Link, LinkType, LinkListJSONType} from './link'
+import {MaybeVersionNumberType} from './types'
+
 const $context = new URIValue('https://github.com/ResourcefulHumans/rheactor-models#Index')
-const LinkIndexType = list(LinkType)
+const $contextVersion = 1
 
 export class Index {
   /**
    * @param {Array<Link>} links
    */
   constructor (links) {
-    LinkIndexType(links)
     this.$context = $context
-    this.$links = links
+    this.$contextVersion = $contextVersion
+    this.$links = LinkIndexType(links)
   }
 
   /**
@@ -20,6 +22,7 @@ export class Index {
   toJSON () {
     return {
       $context: this.$context.toString(),
+      $contextVersion: this.$contextVersion,
       $links: this.$links.map(link => link.toJSON())
     }
   }
@@ -41,6 +44,13 @@ export class Index {
   }
 
   /**
+   * @returns {Number}
+   */
+  static get $contextVersion () {
+    return $contextVersion
+  }
+
+  /**
    * Returns true if x is of type Index
    *
    * @param {object} x
@@ -51,8 +61,11 @@ export class Index {
   }
 }
 
-export const IndexJSONType = struct({
-  $context: refinement(StringType, s => s === $context.toString(), 'IndexContext'),
-  $links: list(LinkJSONType)
-}, 'IndexJSONType')
 export const IndexType = irreducible('IndexType', Index.is)
+export const LinkIndexType = list(LinkType)
+export const MaybeIndexType = maybe(IndexType)
+export const IndexJSONType = struct({
+  $context: refinement(StringType, s => s === Index.$context.toString(), 'IndexContext'),
+  $contextVersion: MaybeVersionNumberType,
+  $links: LinkListJSONType
+}, 'IndexJSONType')

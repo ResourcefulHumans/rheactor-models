@@ -1,5 +1,4 @@
 /* global describe, it */
-
 import {expect} from 'chai'
 import {User, UserType, MaybeUserType, MaybeUserJSONType} from '../src'
 import {URIValue, EmailValue} from 'rheactor-value-objects'
@@ -12,6 +11,7 @@ function validateUser (user) {
   expect(user.$version).to.equal(17)
   expect(user.$deleted).to.equal(false)
   expect(user.$context.equals($context)).to.equal(true)
+  expect(user.$contextVersion).to.equal(2)
   expect(user.$createdAt.toISOString()).to.equal(new Date('2016-01-01T00:00:00Z').toISOString())
   expect(user.$links).to.deep.equal([])
   expect(user.preferences).to.deep.equal({'foo': 'bar', 'baz': [1, 2, 3]})
@@ -95,6 +95,24 @@ describe('User', () => {
   describe('$context', () => {
     it('should exist', () => {
       expect(User.$context.toString()).to.equal('https://github.com/ResourcefulHumans/rheactor-models#User')
+    })
+  })
+
+  describe('$contextVersion', () => {
+    it('should exist', () => {
+      expect(User.$contextVersion).to.be.equal(2)
+    })
+    it('should be contained in the JSON', () => {
+      expect(new User({
+        $id: new URIValue('http://example.com/some-id'),
+        $version: 17,
+        $context: $context,
+        $createdAt: new Date('2016-01-01T00:00:00Z'),
+        email: new EmailValue('john@example.com'),
+        firstname: 'John',
+        lastname: 'Doe',
+        preferences: {'foo': 'bar', 'baz': [1, 2, 3]}
+      }).toJSON().$contextVersion).to.equal(2)
     })
   })
 })
