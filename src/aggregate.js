@@ -1,10 +1,9 @@
 import {Entity} from './entity'
-import {maybe, refinement, irreducible, Integer as IntegerType, String as StringType, Boolean as BooleanType, Date as DateType, struct} from 'tcomb'
+import {maybe, irreducible, String as StringType, Date as DateType, struct} from 'tcomb'
 import {MaybeLinkListJSONType} from './link'
 import {VersionNumberType} from './types'
 const MaybeVersionNumberType = maybe(VersionNumberType)
 const MaybeDateType = maybe(DateType)
-const MaybeBooleanType = maybe(BooleanType)
 const MaybeStringType = maybe(StringType)
 
 /**
@@ -18,33 +17,30 @@ export class Aggregate extends Entity {
     const {$version, $deleted, $createdAt} = Object.assign({$version: undefined, $deleted: undefined, $createdAt: undefined}, fields)
     DateType($createdAt, ['Aggregate', '$createdAt:Date'])
     super(fields)
-    this.$version = VersionNumberType($version, ['Aggregate', '$version:VersionNumber'])
-    this.$deleted = BooleanType($deleted || false, ['Aggregate', '$deleted:Boolean'])
+    this.$version = VersionNumberType(fields.$version, ['Aggregate', '$version:VersionNumber'])
   }
 
   /**
-   * @returns {{$id: String, $version: Number, $deleted: Boolean, $context: String, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}}
+   * @returns {{$id: String, $version: Number, $context: String, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}}
    */
   toJSON () {
     return Object.assign(
       super.toJSON(),
       {
-        $version: this.$version,
-        $deleted: this.$deleted
+        $version: this.$version
       }
     )
   }
 
   /**
-   * @param {{$id: String, $context: String, $deleted: Boolean, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}} data
+   * @param {{$id: String, $context: String, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}} data
    * @returns {Entity}
    */
   static fromJSON (data) {
     AggregateJSONType(data)
     return new Aggregate(Object.assign(
       super.fromJSON(data), {
-        $version: data.$version,
-        $deleted: data.$deleted
+        $version: data.$version
       })
     )
   }
@@ -76,7 +72,6 @@ export class Aggregate extends Entity {
       this.toJSON(),
       {
         $version: newVersion || this.$version + 1,
-        $deleted: true,
         $deletedAt: (deletedAt || new Date()).toISOString()
       }
     ))
@@ -97,7 +92,6 @@ export const AggregateJSONType = struct({
   $context: StringType,
   $id: StringType,
   $version: VersionNumberType,
-  $deleted: MaybeBooleanType,
   $createdAt: StringType,
   $updatedAt: MaybeStringType,
   $deletedAt: MaybeStringType,

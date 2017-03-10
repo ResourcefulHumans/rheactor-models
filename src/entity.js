@@ -11,14 +11,19 @@ export class Entity extends Model {
   constructor (fields) {
     const {$id, $createdAt, $updatedAt, $deletedAt} = Object.assign({$id: undefined, $createdAt: undefined, $updatedAt: undefined, $deletedAt: undefined}, fields)
     super(fields)
-    URIValueType($id, ['Entity', '$id:URIValue'])
-    MaybeDateType($createdAt, ['Entity', '$createdAt:?Date'])
-    MaybeDateType($updatedAt, ['Entity', '$updatedAt:?Date'])
-    MaybeDateType($deletedAt, ['Entity', '$deletedAt:?Date'])
-    this.$id = $id
-    this.$createdAt = $createdAt
-    this.$updatedAt = $updatedAt
-    this.$deletedAt = $deletedAt
+    this.$id = URIValueType(fields.$id, ['Entity', '$id:URIValue'])
+    this.$createdAt = MaybeDateType(fields.$createdAt, ['Entity', '$createdAt:?Date'])
+    this.$updatedAt = MaybeDateType(fields.$updatedAt, ['Entity', '$updatedAt:?Date'])
+    this.$deletedAt = MaybeDateType(fields.$deletedAt, ['Entity', '$deletedAt:?Date'])
+  }
+
+  /**
+   * Whether this Aggregate has been deleted
+   *
+   * @returns {boolean}
+   */
+  get $deleted () {
+    return this.$deletedAt !== undefined
   }
 
   /**

@@ -42,10 +42,6 @@ export class ImmutableAggregate extends Entity {
     return this.constructor.fromJSON.call(undefined, Object.assign(this.toJSON(), {$version: this.$version + 1, $deletedAt: new Date().toISOString()}))
   }
 
-  get $deleted () {
-    return this.$deletedAt !== undefined
-  }
-
   /**
    * @returns {{$id: String, $version: Number, $context: String, $links: Array<Link>, $createdAt: String, $updatedAt: String|undefined, $deletedAt: String|undefined}}
    */

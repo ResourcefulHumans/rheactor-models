@@ -33,7 +33,7 @@ export class User extends Aggregate {
   }
 
   /**
-   * @returns {{$id: String, $version: Number, $deleted: Boolean, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}}
+   * @returns {{$id: String, $version: Number, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}}
    */
   toJSON () {
     return Object.assign(
@@ -51,7 +51,7 @@ export class User extends Aggregate {
   }
 
   /**
-   * @param {{$id: String, $context: String, $deleted: Boolean, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}} data
+   * @param {{$id: String, $context: String, $links: Array<Link>, $createdAt: String|undefined, $updatedAt: String|undefined, $deletedAt: String|undefined, email: String, firstname: String|undefined, lastname: String|undefined, avatar: String|undefined, superUser: Boolean|undefined, active: Boolean|undefined, preferences: String}} data
    * @returns {Entity}
    */
   static fromJSON (data) {
@@ -90,7 +90,6 @@ export class User extends Aggregate {
 export const UserJSONType = struct({
   $id: StringType,
   $version: VersionNumberType,
-  $deleted: MaybeBooleanType,
   $createdAt: StringType,
   $updatedAt: MaybeStringType,
   $deletedAt: MaybeStringType,
