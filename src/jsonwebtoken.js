@@ -8,7 +8,7 @@ let atobImpl
 
 if (typeof atob === 'undefined') {
   if (typeof Buffer !== 'undefined') {
-    atobImpl = (str) => new Buffer(str, 'base64').toString('binary')
+    atobImpl = (str) => Buffer.from(str, 'base64').toString('binary')
   } else {
     atobImpl = require('base-64').decode
   }
