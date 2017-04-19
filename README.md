@@ -10,3 +10,17 @@
 [![NPM](https://nodei.co/npm/rheactor-models.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/rheactor-models/)
 
 A collection of models.
+
+## JSON-LD
+
+> :information_source: See also: [RESTful API in `rheactor-server`](https://github.com/ResourcefulHumans/rheactor-server/blob/master/README.md#restful-api)
+
+### `$context`
+
+When creating an object instance from a JSON representation, the `fromJSON()` method expects the presence of the correct `$context` value. When serializing and unserializing using these models, this is done automatically.
+
+This makes it impossible to use the data for one entity as another.
+
+### `$contextVersion`
+
+The `$contextVersion` was added to enable clients that cache entities, e.g. in localStorage, to check if their application code is compatibel with the cached data.
